@@ -8,28 +8,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <style>
     :root {
-      --primary: #1a73e8;
-      --primary-container: #d3e3fd;
-      --on-primary-container: #0b57d0;
-      --surface: #ffffff;
-      --surface-variant: #f1f3f4;
-      --surface-container: #f8f9fa;
-      --outline: #dadce0;
-      --outline-variant: #e8eaed;
-      --on-surface: #202124;
-      --on-surface-variant: #5f6368;
-      --error: #d93025;
-      --success: #1e8e3e;
-      --elev1: 0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
-      --font: 'Google Sans',sans-serif;
-      --mono: 'Google Sans Mono',monospace;
-      --deva: 'Noto Serif Devanagari',serif;
+      --primary:#1a73e8;--primary-container:#d3e3fd;--on-primary-container:#0b57d0;
+      --surface:#fff;--surface-variant:#f1f3f4;--surface-container:#f8f9fa;
+      --outline:#dadce0;--outline-variant:#e8eaed;
+      --on-surface:#202124;--on-surface-variant:#5f6368;
+      --error:#d93025;--success:#1e8e3e;
+      --elev1:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+      --font:'Google Sans',sans-serif;--mono:'Google Sans Mono',monospace;--deva:'Noto Serif Devanagari',serif;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;background:var(--surface-container);color:var(--on-surface);font-family:var(--font);font-size:14px;}
     .app{display:grid;grid-template-rows:64px 1fr;height:100vh;overflow:hidden;}
 
-    /* TOP BAR */
     .top-bar{background:var(--surface);border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;padding:0 16px 0 8px;gap:8px;z-index:10;}
     .logo{display:flex;align-items:center;gap:10px;padding:0 12px;}
     .logo-icon{width:36px;height:36px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;}
@@ -58,10 +48,8 @@
     .btn-text{background:transparent;color:var(--primary);padding:0 12px;}
     .btn-text:hover{background:rgba(26,115,232,.08);}
 
-    /* BODY */
     .body{display:grid;grid-template-columns:300px 1fr;overflow:hidden;}
 
-    /* SIDEBAR */
     .sidebar{background:var(--surface);border-right:1px solid var(--outline-variant);overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
     .sec-label{padding:8px 12px 4px;font-size:11px;font-weight:600;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:.08em;}
     .char-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .15s;position:relative;}
@@ -88,8 +76,8 @@
     .model-chip{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--outline);background:var(--surface);color:var(--on-surface-variant);transition:all .15s;}
     .model-chip:hover{background:var(--surface-variant);}
     .model-chip.active{background:var(--primary);color:white;border-color:var(--primary);}
+    .save-btn-wrap{margin-top:8px;}
 
-    /* MAIN */
     .main{display:flex;flex-direction:column;overflow:hidden;background:var(--surface-container);}
     .editor-container{flex:1;padding:16px 20px 8px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
     .toolbar-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
@@ -97,7 +85,7 @@
     .char-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .15s;}
     .char-chip:hover{opacity:.85;transform:translateY(-1px);}
     .chip-dot{width:7px;height:7px;border-radius:50%;}
-    .emo-chip{padding:4px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:1px solid var(--outline);background:var(--surface);color:var(--on-surface-variant);font-family:var(--deva);transition:all .15s;}
+    .emo-chip{padding:4px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:1px solid var(--outline);background:var(--surface);color:var(--on-surface-variant);transition:all .15s;}
     .emo-chip:hover{background:var(--primary-container);color:var(--on-primary-container);border-color:transparent;}
     .script-card{flex:1;background:var(--surface);border-radius:16px;border:1px solid var(--outline-variant);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elev1);min-height:0;}
     .sc-hdr{padding:12px 16px 8px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;gap:8px;}
@@ -106,31 +94,18 @@
     textarea{flex:1;width:100%;min-height:200px;border:none;outline:none;resize:none;font-family:var(--deva);font-size:15px;line-height:1.9;color:var(--on-surface);padding:16px;background:transparent;}
     textarea::placeholder{color:var(--on-surface-variant);opacity:.6;}
 
-    /* ACTION BAR */
     .action-bar{background:var(--surface);border-top:1px solid var(--outline-variant);padding:12px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
     .status-msg{flex:1;font-size:13px;color:var(--on-surface-variant);padding:0 4px;display:flex;align-items:center;gap:6px;min-width:0;}
     .status-msg.ok{color:var(--success);}
     .status-msg.err{color:var(--error);}
 
-    /* ONE FILE BUTTON — highlighted */
-    .btn-one-file{background:#0b57d0;color:white;font-size:13px;padding:0 20px;height:44px;border-radius:22px;border:none;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(11,87,208,.35);}
-    .btn-one-file:hover{filter:brightness(1.08);box-shadow:0 4px 12px rgba(11,87,208,.45);}
-    .btn-one-file:disabled{background:rgba(0,0,0,.12);color:rgba(0,0,0,.38);cursor:not-allowed;box-shadow:none;}
-    .btn-one-file .material-icons-round{font-size:20px;}
-    .one-file-hint{font-size:11px;color:var(--on-surface-variant);margin-top:4px;}
-
-    /* PROGRESS */
-    .progress-wrap{width:100%;background:var(--outline-variant);border-radius:2px;height:3px;margin-top:8px;overflow:hidden;}
-    .progress-fill{height:100%;background:var(--primary);border-radius:2px;width:0%;transition:width .3s;}
-
-    /* AUDIO PANEL */
-    .audio-panel{background:var(--surface);border-top:1px solid var(--outline-variant);max-height:220px;overflow-y:auto;}
+    .audio-panel{background:var(--surface);border-top:1px solid var(--outline-variant);max-height:240px;overflow-y:auto;}
     .ap-hdr{padding:10px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--outline-variant);position:sticky;top:0;background:var(--surface);z-index:1;}
     .ap-title{font-size:13px;font-weight:500;flex:1;}
     .audio-rows{padding:6px 12px;display:flex;flex-direction:column;gap:4px;}
     .audio-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid var(--outline-variant);background:var(--surface-container);transition:background .15s;}
     .audio-row:hover{background:var(--surface-variant);}
-    .audio-row.merged{border:2px solid var(--primary);background:#f0f4ff;}
+    .a-num{font-size:11px;color:var(--on-surface-variant);min-width:24px;text-align:center;font-family:var(--mono);}
     .a-bar{width:3px;height:28px;border-radius:2px;flex-shrink:0;}
     .a-char{font-size:12px;font-weight:500;min-width:90px;}
     .a-prev{flex:1;font-size:13px;font-family:var(--deva);color:var(--on-surface-variant);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -173,14 +148,20 @@
   </header>
 
   <div class="body">
-
     <aside class="sidebar">
       <div class="sec-label">Characters</div>
       <div id="charList"></div>
-      <button class="btn btn-outlined" style="width:100%;margin:8px 0 16px;border-radius:12px;height:38px;" onclick="addCharacter()">
+      <button class="btn btn-outlined" style="width:100%;margin:8px 0 4px;border-radius:12px;height:38px;" onclick="addCharacter()">
         <span class="material-icons-round" style="font-size:16px;">person_add</span> Add character
       </button>
+      <div class="save-btn-wrap">
+        <button class="btn btn-tonal" style="width:100%;border-radius:12px;height:36px;font-size:13px;" onclick="saveCharactersToRepo()">
+          <span class="material-icons-round" style="font-size:16px;">save</span> Save to repo
+        </button>
+        <div style="font-size:11px;color:var(--on-surface-variant);margin-top:4px;padding:0 4px;">Needs GitHub token</div>
+      </div>
       <div class="divider"></div>
+
       <div id="charSettingsPanel" style="display:none;" class="settings-panel">
         <div class="set-title" id="charSettingsLabel">Voice & Settings</div>
         <select class="md-select" id="voiceSelect" onchange="updateCharVoice()">
@@ -200,6 +181,7 @@
         </div>
         <div class="divider"></div>
       </div>
+
       <div class="sec-label" style="margin-top:4px;">Model</div>
       <div class="model-chips">
         <div class="model-chip active" id="pill-eleven_v3" onclick="setModel('eleven_v3',this)">v3 alpha</div>
@@ -221,271 +203,265 @@
           <span class="emo-chip" onclick="ins('[गर्जना] ')">[गर्जना]</span>
           <span class="emo-chip" onclick="ins('[whisper] ')">[whisper]</span>
           <span class="emo-chip" onclick="ins('[excited] ')">[excited]</span>
-          <span class="emo-chip" onclick="ins('[sad] ')">[sad]</span>
           <span class="emo-chip" onclick="ins('[reverent] ')">[reverent]</span>
         </div>
         <div class="script-card">
           <div class="sc-hdr">
             <span class="material-icons-round" style="font-size:18px;color:var(--on-surface-variant);">edit_note</span>
             <span class="sc-title">Script</span>
-            <span class="cc-badge" id="charCount">0 characters</span>
+            <span class="cc-badge" id="segCount">0 segments</span>
+            <span class="cc-badge" id="charCount" style="margin-left:4px;">0 chars</span>
           </div>
           <textarea id="scriptBox" spellcheck="false" oninput="updateCount()"
-            placeholder="[narrator] Yeh us mahaan kaal ki baat hai...
+            placeholder="[narrator] यह उस महान काल की बात है...
 
-[sudharma] He Jambu! Shraman Bhagwan Mahaveer ne antakrit dasha ke aath varg kahe hain.
+[jambu] [reverent] हे भगवन्! अन्तकृदशा में किस विषय का प्रतिपादन किया है?
 
-[jambu] [reverent] Gurudev, pratham varg mein kaun se adhyayan hain?
-
-[sudharma] Pratham varg mein das adhyayan hain — Gautam, Samudra, Sagar..."></textarea>
+[sudharma] [calm] हे जम्बू! प्रथम वर्ग में दस अध्ययन हैं — गौतम, समुद्र, सागर..."></textarea>
         </div>
       </div>
 
-      <!-- ACTION BAR -->
       <div class="action-bar">
-
-        <!-- PRIMARY: Generate as one file -->
-        <div style="display:flex;flex-direction:column;">
-          <button class="btn-one-file" id="btnOneFile" onclick="generateOneFile()" disabled>
-            <span class="material-icons-round">merge_type</span>
-            Generate as one file
-          </button>
-          <div class="one-file-hint">All characters → single MP3</div>
-        </div>
-
-        <div style="width:1px;height:44px;background:var(--outline-variant);margin:0 4px;"></div>
-
-        <!-- SECONDARY actions -->
-        <button class="btn btn-tonal" id="btnGenAll" onclick="generateAll()" disabled>
-          <span class="material-icons-round">queue</span> Generate segments
+        <button class="btn btn-filled" id="btnGenAll" onclick="generateAll()" disabled>
+          <span class="material-icons-round">graphic_eq</span> Generate all segments
         </button>
-        <button class="btn btn-outlined" id="btnFirst" onclick="generateFirst()" disabled>
+        <button class="btn btn-tonal" id="btnFirst" onclick="generateFirst()" disabled>
           <span class="material-icons-round">play_arrow</span> Test first
         </button>
-
         <div class="status-msg" id="statusMsg">Connect API key to start</div>
         <button class="btn btn-text" onclick="clearAll()">
           <span class="material-icons-round">delete_sweep</span>
         </button>
       </div>
 
-      <!-- AUDIO PANEL -->
       <div class="audio-panel" id="audioPanel" style="display:none;">
         <div class="ap-hdr">
           <span class="material-icons-round" style="font-size:18px;color:var(--primary);">queue_music</span>
-          <span class="ap-title" id="apTitle">Generated audio</span>
+          <span class="ap-title" id="apTitle">Generated segments</span>
           <button class="btn btn-outlined" style="height:32px;padding:0 12px;font-size:12px;" onclick="dlAll()">
             <span class="material-icons-round" style="font-size:16px;">download</span> Download all
           </button>
         </div>
         <div class="audio-rows" id="audioList"></div>
       </div>
-
     </main>
   </div>
 </div>
 
 <script>
-const PAL=['#1a73e8','#1e8e3e','#e8710a','#9334e6','#d93025','#0097a7','#c2185b','#f9ab00'];
-let voices=[],characters=[
-  {id:'narrator',    name:'Narrator',    voiceId:'',color:PAL[0],stability:.5,similarity:.75,style:.3},
-  {id:'sudharma',    name:'Sudharma',    voiceId:'',color:PAL[1],stability:.6,similarity:.75,style:.25},
-  {id:'jambu',       name:'Jambu',       voiceId:'',color:PAL[3],stability:.5,similarity:.75,style:.35},
-  {id:'gautam',      name:'Gautam',      voiceId:'',color:PAL[2],stability:.5,similarity:.75,style:.4},
-  {id:'dharini',     name:'Dharini',     voiceId:'',color:PAL[6],stability:.5,similarity:.75,style:.35},
-  {id:'arishtanemi', name:'Arishtanemi', voiceId:'',color:PAL[4],stability:.65,similarity:.75,style:.2},
-];
-let activeCharId='narrator',selectedModel='eleven_v3',audios=[],playingIdx=null;
+const REPO_RAW = 'https://raw.githubusercontent.com/Abhishek249/tts-studio/main/characters.json';
+const REPO_API = 'https://api.github.com/repos/Abhishek249/tts-studio/contents/characters.json';
+const PAL = ['#1a73e8','#1e8e3e','#9334e6','#e8710a','#d93025','#c2185b','#f9ab00','#0097a7'];
 
-function renderChars(){
-  document.getElementById('charList').innerHTML=characters.map(c=>`
+let voices = [], characters = [], activeCharId = null, selectedModel = 'eleven_v3', audios = [], playingIdx = null;
+
+// ── Boot: load characters.json from repo ──
+async function boot() {
+  try {
+    const res = await fetch(REPO_RAW + '?t=' + Date.now());
+    const data = await res.json();
+    characters = data.characters || [];
+    if (characters.length) activeCharId = characters[0].id;
+  } catch(e) {
+    // fallback defaults
+    characters = [
+      {id:'narrator',   name:'Narrator',   color:PAL[0],voiceId:'o76sLDABsemuKZKvLV1a',voiceName:'Katha vaachak',stability:.5,similarity:.75,style:.3},
+      {id:'sudharma',   name:'Sudharma',   color:PAL[1],voiceId:'S6fdx8hmfwbuJn0oSUXj',voiceName:'Acharya Sudharma Swami Ji',stability:.6,similarity:.75,style:.25},
+      {id:'jambu',      name:'Jambu',      color:PAL[2],voiceId:'Tk7CafXYxqYvvn5VIHqd',voiceName:'Jambuswami ji',stability:.5,similarity:.75,style:.35},
+      {id:'gautam',     name:'Gautam',     color:PAL[3],voiceId:'JBFqnCBsd6RMkjVDRZzb',voiceName:'George - Warm',stability:.5,similarity:.75,style:.4},
+      {id:'arishtanemi',name:'Arishtanemi',color:PAL[4],voiceId:'nPczCjzI2devNBz1zQrb',voiceName:'Brian - Deep',stability:.65,similarity:.75,style:.2},
+      {id:'dharini',    name:'Dharini',    color:PAL[5],voiceId:'cgSgspJ2msm6clMCkdW9',voiceName:'Jessica - Warm',stability:.5,similarity:.75,style:.35},
+    ];
+    activeCharId = 'narrator';
+  }
+  renderChars();
+}
+
+// ── Save characters.json back to repo via GitHub API ──
+async function saveCharactersToRepo() {
+  const token = prompt('Enter GitHub token to save:');
+  if (!token) return;
+  try {
+    // get current SHA
+    const meta = await fetch(REPO_API, {headers:{'Authorization':'token '+token}});
+    const metaJson = await meta.json();
+    const sha = metaJson.sha;
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({characters}, null, 2))));
+    const res = await fetch(REPO_API, {
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+      body: JSON.stringify({message:'Update character voice mappings', content, sha})
+    });
+    if (res.ok) setStatus('Saved to repo ✓', 'ok');
+    else throw new Error('Save failed: ' + res.status);
+  } catch(e) { setStatus('Save error: ' + e.message, 'err'); }
+}
+
+function renderChars() {
+  document.getElementById('charList').innerHTML = characters.map(c => `
     <div class="char-item ${c.id===activeCharId?'active':''}" onclick="selectChar('${c.id}')">
       <div class="char-av" style="background:${c.color}1a;color:${c.color}">${c.name.slice(0,2).toUpperCase()}</div>
       <div class="char-det">
         <div class="char-nm">${c.name}</div>
-        <div class="char-vl">${c.voiceId?(voices.find(v=>v.voice_id===c.voiceId)?.name||'Voice assigned'):'No voice assigned'}</div>
+        <div class="char-vl">${c.voiceName || 'No voice assigned'}</div>
       </div>
     </div>`).join('');
   renderTagBar();
   renderSettingsPanel();
 }
 
-function renderTagBar(){
-  document.getElementById('tagBar').innerHTML=
-    `<span class="tb-label">Insert:</span>`+
-    characters.map(c=>`
+function renderTagBar() {
+  document.getElementById('tagBar').innerHTML =
+    `<span class="tb-label">Insert:</span>` +
+    characters.map(c => `
       <div class="char-chip" style="background:${c.color}12;border-color:${c.color}30;color:${c.color}" onclick="ins('[${c.id}] ')">
         <span class="chip-dot" style="background:${c.color}"></span>${c.name}
       </div>`).join('');
 }
 
-function renderSettingsPanel(){
-  const c=characters.find(x=>x.id===activeCharId);if(!c)return;
-  document.getElementById('charSettingsPanel').style.display='block';
-  document.getElementById('charSettingsLabel').textContent=`${c.name} — voice & settings`;
-  document.getElementById('stabSlider').value=c.stability;
-  document.getElementById('simSlider').value=c.similarity;
-  document.getElementById('styleSlider').value=c.style;
-  document.getElementById('stabVal').textContent=c.stability.toFixed(2);
-  document.getElementById('simVal').textContent=c.similarity.toFixed(2);
-  document.getElementById('styleVal').textContent=c.style.toFixed(2);
-  const sel=document.getElementById('voiceSelect');
-  sel.innerHTML='<option value="">— assign voice —</option>'+
-    voices.map(v=>`<option value="${v.voice_id}" ${v.voice_id===c.voiceId?'selected':''}>${v.name}${v.category==='cloned'?' 🎙️':v.category==='generated'?' ✨':''}</option>`).join('');
+function renderSettingsPanel() {
+  const c = characters.find(x => x.id === activeCharId); if (!c) return;
+  document.getElementById('charSettingsPanel').style.display = 'block';
+  document.getElementById('charSettingsLabel').textContent = `${c.name} — voice & settings`;
+  document.getElementById('stabSlider').value = c.stability;
+  document.getElementById('simSlider').value = c.similarity;
+  document.getElementById('styleSlider').value = c.style;
+  document.getElementById('stabVal').textContent = c.stability.toFixed(2);
+  document.getElementById('simVal').textContent = c.similarity.toFixed(2);
+  document.getElementById('styleVal').textContent = c.style.toFixed(2);
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '<option value="">— assign voice —</option>' +
+    voices.map(v => `<option value="${v.voice_id}" ${v.voice_id===c.voiceId?'selected':''}>${v.name}${v.category==='cloned'?' 🎙️':v.category==='generated'?' ✨':''}</option>`).join('');
 }
 
-function selectChar(id){saveCharSettings();activeCharId=id;renderChars();}
-function updateCharVoice(){const c=characters.find(x=>x.id===activeCharId);if(c){c.voiceId=document.getElementById('voiceSelect').value;renderChars();}}
-function saveCharSettings(){
-  const c=characters.find(x=>x.id===activeCharId);if(!c)return;
-  c.stability=parseFloat(document.getElementById('stabSlider').value);
-  c.similarity=parseFloat(document.getElementById('simSlider').value);
-  c.style=parseFloat(document.getElementById('styleSlider').value);
+function selectChar(id) { saveCharSettings(); activeCharId = id; renderChars(); }
+
+function updateCharVoice() {
+  const c = characters.find(x => x.id === activeCharId); if (!c) return;
+  const sel = document.getElementById('voiceSelect');
+  c.voiceId = sel.value;
+  c.voiceName = sel.options[sel.selectedIndex]?.text || '';
+  renderChars();
 }
-function addCharacter(){
-  const name=prompt('Character name:');if(!name?.trim())return;
-  const id=name.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-  if(characters.find(c=>c.id===id)){alert('Already exists');return;}
-  characters.push({id,name:name.trim(),voiceId:'',color:PAL[characters.length%PAL.length],stability:.5,similarity:.75,style:.3});
-  activeCharId=id;renderChars();
+
+function saveCharSettings() {
+  const c = characters.find(x => x.id === activeCharId); if (!c) return;
+  c.stability = parseFloat(document.getElementById('stabSlider').value);
+  c.similarity = parseFloat(document.getElementById('simSlider').value);
+  c.style = parseFloat(document.getElementById('styleSlider').value);
 }
-function setModel(m,el){
-  selectedModel=m;
-  document.querySelectorAll('.model-chip').forEach(p=>p.classList.remove('active'));
+
+function addCharacter() {
+  const name = prompt('Character name:'); if (!name?.trim()) return;
+  const id = name.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  if (characters.find(c => c.id === id)) { alert('Already exists'); return; }
+  characters.push({id, name:name.trim(), color:PAL[characters.length%PAL.length], voiceId:'', voiceName:'', stability:.5, similarity:.75, style:.3});
+  activeCharId = id; renderChars();
+}
+
+function setModel(m, el) {
+  selectedModel = m;
+  document.querySelectorAll('.model-chip').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
 }
 
-async function loadVoices(){
-  const key=document.getElementById('apiKey').value.trim();
-  if(!key){setStatus('Enter API key first','err');return;}
-  setStatus('<span class="spinner"></span> Connecting…','');
-  try{
-    const res=await fetch('https://api.elevenlabs.io/v1/voices',{headers:{'xi-api-key':key}});
-    if(!res.ok)throw new Error('Auth failed ('+res.status+')');
-    const data=await res.json();voices=data.voices||[];
-    const chip=document.getElementById('statusChip');
-    chip.className='status-chip connected';
-    document.getElementById('statusChipText').textContent=`${voices.length} voices`;
-    ['btnOneFile','btnGenAll','btnFirst'].forEach(id=>document.getElementById(id).disabled=false);
+async function loadVoices() {
+  const key = document.getElementById('apiKey').value.trim();
+  if (!key) { setStatus('Enter API key first','err'); return; }
+  setStatus('<span class="spinner"></span> Connecting…', '');
+  try {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices', {headers:{'xi-api-key':key}});
+    if (!res.ok) throw new Error('Auth failed (' + res.status + ')');
+    const data = await res.json(); voices = data.voices || [];
+    const chip = document.getElementById('statusChip');
+    chip.className = 'status-chip connected';
+    document.getElementById('statusChipText').textContent = `${voices.length} voices`;
+    ['btnGenAll','btnFirst'].forEach(id => document.getElementById(id).disabled = false);
     renderChars();
-    setStatus(`Connected — ${voices.length} voices loaded`,'ok');
-  }catch(e){setStatus('Error: '+e.message,'err');}
+    setStatus(`Connected — ${voices.length} voices loaded`, 'ok');
+  } catch(e) { setStatus('Error: ' + e.message, 'err'); }
 }
 
-function parseScript(txt){
-  return txt.split('\n').filter(l=>l.trim()).map(line=>{
-    const m=line.match(/^\[([^\]]+)\]\s*((?:\[[^\]]+\]\s*)*)(.+)/);
-    return m?{charId:m[1].trim().toLowerCase().replace(/\s+/g,'_'),emotions:m[2].trim(),text:m[3].trim()}:null;
-  }).filter(Boolean);
+function parseScript(txt) {
+  return txt.split('\n').filter(l => l.trim()).map((line, i) => {
+    const m = line.match(/^\[([^\]]+)\]\s*((?:\[[^\]]+\]\s*)*)(.+)/);
+    return m ? {num: i+1, charId: m[1].trim().toLowerCase().replace(/\s+/g,'_'), emotions: m[2].trim(), text: m[3].trim()} : null;
+  }).filter(Boolean).map((s, i) => ({...s, num: i+1}));
 }
 
-async function callTTS(seg){
-  const key=document.getElementById('apiKey').value.trim();
-  const char=characters.find(c=>c.id===seg.charId);
-  if(!char)throw new Error(`Unknown character: [${seg.charId}]`);
-  if(!char.voiceId)throw new Error(`No voice assigned to ${char.name}`);
-  const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${char.voiceId}`,{
-    method:'POST',
-    headers:{'xi-api-key':key,'Content-Type':'application/json','Accept':'audio/mpeg'},
-    body:JSON.stringify({
-      text:seg.emotions?`${seg.emotions} ${seg.text}`:seg.text,
-      model_id:selectedModel,
-      voice_settings:{stability:char.stability,similarity_boost:char.similarity,style:char.style,use_speaker_boost:true}
+async function callTTS(seg) {
+  const key = document.getElementById('apiKey').value.trim();
+  const char = characters.find(c => c.id === seg.charId);
+  if (!char) throw new Error(`Unknown character: [${seg.charId}]`);
+  if (!char.voiceId) throw new Error(`No voice assigned to: ${char.name}`);
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${char.voiceId}`, {
+    method: 'POST',
+    headers: {'xi-api-key': key, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg'},
+    body: JSON.stringify({
+      text: seg.emotions ? `${seg.emotions} ${seg.text}` : seg.text,
+      model_id: selectedModel,
+      voice_settings: {stability: char.stability, similarity_boost: char.similarity, style: char.style, use_speaker_boost: true}
     })
   });
-  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.detail?.message||`API ${res.status}`);}
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.detail?.message || `API ${res.status}`); }
   return await res.arrayBuffer();
 }
 
-// ── GENERATE AS ONE FILE ──
-async function generateOneFile(){
+async function generateAll() {
   saveCharSettings();
-  const segs=parseScript(document.getElementById('scriptBox').value);
-  if(!segs.length){setStatus('No [character] segments found','err');return;}
-  setBusy(true);audios=[];renderAudios();
-
-  const buffers=[];
-  for(let i=0;i<segs.length;i++){
-    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,40)}…"`,'');
-    try{
-      const buf=await callTTS(segs[i]);
-      buffers.push({buf,seg:segs[i]});
-      // small silence between segments (0.4s at 44100Hz stereo = ~70KB but we just concat MP3s)
-    }catch(e){setStatus('Error at '+(i+1)+': '+e.message,'err');setBusy(false);return;}
+  const segs = parseScript(document.getElementById('scriptBox').value);
+  if (!segs.length) { setStatus('No [character] segments found','err'); return; }
+  setBusy(true); audios = []; renderAudios();
+  for (let i = 0; i < segs.length; i++) {
+    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,42)}…`, '');
+    try {
+      const buf = await callTTS(segs[i]);
+      const url = URL.createObjectURL(new Blob([buf], {type:'audio/mpeg'}));
+      audios.push({...segs[i], url});
+      renderAudios();
+      await new Promise(r => setTimeout(r, 300));
+    } catch(e) { setStatus('Stopped at '+(i+1)+': '+e.message,'err'); setBusy(false); return; }
   }
-
-  // Merge all ArrayBuffers into one Blob
-  setStatus('<span class="spinner"></span> Merging audio…','');
-  const merged=new Blob(buffers.map(b=>b.buf),{type:'audio/mpeg'});
-  const mergedUrl=URL.createObjectURL(merged);
-
-  // Add merged file first
-  audios.push({charId:'__merged__',text:'Complete story — all characters',emotions:'',url:mergedUrl,merged:true,id:Date.now()});
-  // Also add individual segments for reference
-  buffers.forEach((b,i)=>{
-    const url=URL.createObjectURL(new Blob([b.buf],{type:'audio/mpeg'}));
-    audios.push({...b.seg,url,id:Date.now()+i+1});
-  });
-
-  renderAudios();
-  setStatus(`Done! Full story merged + ${buffers.length} individual segments`,'ok');
+  setStatus(`✓ ${audios.length} segments ready — download all for InShot`, 'ok');
   setBusy(false);
 }
 
-// ── GENERATE ALL SEGMENTS ──
-async function generateAll(){
-  saveCharSettings();
-  const segs=parseScript(document.getElementById('scriptBox').value);
-  if(!segs.length){setStatus('No [character] segments found','err');return;}
-  setBusy(true);audios=[];renderAudios();
-  for(let i=0;i<segs.length;i++){
-    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,40)}…"`,'');
-    try{
-      const buf=await callTTS(segs[i]);
-      const url=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
-      audios.push({...segs[i],url,id:Date.now()+i});renderAudios();
-      await new Promise(r=>setTimeout(r,300));
-    }catch(e){setStatus('Stopped at '+(i+1)+': '+e.message,'err');setBusy(false);return;}
-  }
-  setStatus(`All ${audios.length} segments generated!`,'ok');setBusy(false);
-}
-
-async function generateFirst(){
-  const segs=parseScript(document.getElementById('scriptBox').value);
-  if(!segs.length){setStatus('No [character] segments found','err');return;}
+async function generateFirst() {
+  const segs = parseScript(document.getElementById('scriptBox').value);
+  if (!segs.length) { setStatus('No [character] segments found','err'); return; }
   setBusy(true);
-  try{
-    setStatus('<span class="spinner"></span> Generating test segment…','');
-    const buf=await callTTS(segs[0]);
-    const url=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
-    audios.unshift({...segs[0],url,id:Date.now()});renderAudios();
-    setStatus('Test ready — play below','ok');
-  }catch(e){setStatus('Error: '+e.message,'err');}
+  try {
+    setStatus('<span class="spinner"></span> Generating test…', '');
+    const buf = await callTTS(segs[0]);
+    const url = URL.createObjectURL(new Blob([buf], {type:'audio/mpeg'}));
+    audios.unshift({...segs[0], url});
+    renderAudios();
+    setStatus('Test ready — play below', 'ok');
+  } catch(e) { setStatus('Error: '+e.message,'err'); }
   setBusy(false);
 }
 
-function setBusy(b){['btnOneFile','btnGenAll','btnFirst'].forEach(id=>document.getElementById(id).disabled=b);}
+function setBusy(b) { ['btnGenAll','btnFirst'].forEach(id => document.getElementById(id).disabled = b); }
 
-function renderAudios(){
-  const panel=document.getElementById('audioPanel');
-  if(!audios.length){panel.style.display='none';return;}
-  panel.style.display='block';
-  document.getElementById('apTitle').textContent=`${audios.length} audio file${audios.length>1?'s':''}`;
-  document.getElementById('audioList').innerHTML=audios.map((a,i)=>{
-    const isMerged=a.merged;
-    const char=characters.find(c=>c.id===a.charId);
-    const color=isMerged?'#0b57d0':(char?.color||'#888');
-    const label=isMerged?'🎬 Full Story':char?.name||a.charId;
-    const preview=isMerged?'Complete merged audio — all characters':''+a.text;
-    return `<div class="audio-row ${isMerged?'merged':''}">
+function renderAudios() {
+  const panel = document.getElementById('audioPanel');
+  if (!audios.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  document.getElementById('apTitle').textContent = `${audios.length} segment${audios.length>1?'s':''} — download all for InShot`;
+  document.getElementById('audioList').innerHTML = audios.map((a, i) => {
+    const char = characters.find(c => c.id === a.charId);
+    const color = char?.color || '#888';
+    const fname = `${String(a.num).padStart(2,'0')}_${a.charId}.mp3`;
+    return `<div class="audio-row">
+      <div class="a-num">${a.num}</div>
       <div class="a-bar" style="background:${color}"></div>
-      <div class="a-char" style="color:${color}">${label}</div>
-      <div class="a-prev">${a.emotions?a.emotions+' ':''}"${preview}"</div>
+      <div class="a-char" style="color:${color}">${char?.name || a.charId}</div>
+      <div class="a-prev">${a.emotions ? a.emotions+' ' : ''}"${a.text}"</div>
       <div class="a-acts">
         <button class="icon-btn ${playingIdx===i?'playing':''}" id="pb-${i}" onclick="togglePlay(${i})">
           <span class="material-icons-round">${playingIdx===i?'pause':'play_arrow'}</span>
         </button>
-        <button class="icon-btn" onclick="dlOne(${i})" title="Download">
+        <button class="icon-btn" onclick="dlOne(${i})" title="${fname}">
           <span class="material-icons-round">download</span>
         </button>
       </div>
@@ -494,43 +470,49 @@ function renderAudios(){
   }).join('');
 }
 
-function togglePlay(i){
-  if(playingIdx!==null&&playingIdx!==i){
-    const p=document.getElementById('aud-'+playingIdx);if(p){p.pause();p.currentTime=0;}
-    playingIdx=null;renderAudios();
+function togglePlay(i) {
+  if (playingIdx !== null && playingIdx !== i) {
+    const p = document.getElementById('aud-'+playingIdx); if(p){p.pause();p.currentTime=0;}
+    playingIdx = null; renderAudios();
   }
-  const a=document.getElementById('aud-'+i);
-  if(a.paused){a.play();playingIdx=i;}else{a.pause();playingIdx=null;}
+  const a = document.getElementById('aud-'+i);
+  if (a.paused) { a.play(); playingIdx = i; } else { a.pause(); playingIdx = null; }
   renderAudios();
 }
-function onEnd(i){playingIdx=null;renderAudios();}
-function dlOne(i){
-  const a=audios[i];const l=document.createElement('a');
-  l.href=a.url;
-  l.download=a.merged?'gautam_story_full.mp3':`${String(i).padStart(2,'0')}_${a.charId}.mp3`;
+function onEnd(i) { playingIdx = null; renderAudios(); }
+
+function dlOne(i) {
+  const a = audios[i];
+  const l = document.createElement('a');
+  l.href = a.url;
+  l.download = `${String(a.num).padStart(2,'0')}_${a.charId}.mp3`;
   l.click();
 }
-function dlAll(){audios.forEach((_,i)=>setTimeout(()=>dlOne(i),i*300));}
-function clearAll(){audios=[];playingIdx=null;renderAudios();setStatus('','');}
+function dlAll() { audios.forEach((_, i) => setTimeout(() => dlOne(i), i * 300)); }
+function clearAll() { audios = []; playingIdx = null; renderAudios(); setStatus('',''); }
 
-function ins(text){
-  const ta=document.getElementById('scriptBox');const s=ta.selectionStart;
-  const before=ta.value.slice(0,s);const after=ta.value.slice(ta.selectionEnd);
-  const needsNL=before.length>0&&!before.endsWith('\n\n')&&!before.endsWith('\n');
-  const t=(needsNL?'\n':'')+text;
-  ta.value=before+t+after;ta.selectionStart=ta.selectionEnd=s+t.length;
-  ta.focus();updateCount();
-}
-function updateCount(){
-  const n=document.getElementById('scriptBox').value.length;
-  document.getElementById('charCount').textContent=n.toLocaleString()+' characters';
-}
-function setStatus(html,type){
-  const el=document.getElementById('statusMsg');
-  el.innerHTML=html;el.className='status-msg'+(type?' '+type:'');
+function ins(text) {
+  const ta = document.getElementById('scriptBox'); const s = ta.selectionStart;
+  const before = ta.value.slice(0, s); const after = ta.value.slice(ta.selectionEnd);
+  const needsNL = before.length > 0 && !before.endsWith('\n\n') && !before.endsWith('\n');
+  const t = (needsNL ? '\n' : '') + text;
+  ta.value = before + t + after; ta.selectionStart = ta.selectionEnd = s + t.length;
+  ta.focus(); updateCount();
 }
 
-renderChars();updateCount();
+function updateCount() {
+  const txt = document.getElementById('scriptBox').value;
+  const segs = parseScript(txt);
+  document.getElementById('segCount').textContent = segs.length + ' segments';
+  document.getElementById('charCount').textContent = txt.length.toLocaleString() + ' chars';
+}
+
+function setStatus(html, type) {
+  const el = document.getElementById('statusMsg');
+  el.innerHTML = html; el.className = 'status-msg' + (type ? ' '+type : '');
+}
+
+boot();
 </script>
 </body>
 </html>
