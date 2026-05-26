@@ -1,0 +1,64 @@
+{
+  "characters": [
+    {
+      "id": "narrator",
+      "name": "Narrator",
+      "color": "#1a73e8",
+      "voiceId": "o76sLDABsemuKZKvLV1a",
+      "voiceName": "Katha vaachak",
+      "stability": 0.5,
+      "similarity": 0.75,
+      "style": 0.3
+    },
+    {
+      "id": "sudharma",
+      "name": "Sudharma",
+      "color": "#1e8e3e",
+      "voiceId": "S6fdx8hmfwbuJn0oSUXj",
+      "voiceName": "Acharya Sudharma Swami Ji",
+      "stability": 0.6,
+      "similarity": 0.75,
+      "style": 0.25
+    },
+    {
+      "id": "jambu",
+      "name": "Jambu",
+      "color": "#9334e6",
+      "voiceId": "Tk7CafXYxqYvvn5VIHqd",
+      "voiceName": "Jambuswami ji",
+      "stability": 0.5,
+      "similarity": 0.75,
+      "style": 0.35
+    },
+    {
+      "id": "gautam",
+      "name": "Gautam",
+      "color": "#e8710a",
+      "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+      "voiceName": "George - Warm, Captivating Storyteller",
+      "stability": 0.5,
+      "similarity": 0.75,
+      "style": 0.4
+    },
+    {
+      "id": "arishtanemi",
+      "name": "Arishtanemi",
+      "color": "#d93025",
+      "voiceId": "nPczCjzI2devNBz1zQrb",
+      "voiceName": "Brian - Deep, Resonant and Comforting",
+      "stability": 0.65,
+      "similarity": 0.75,
+      "style": 0.2
+    },
+    {
+      "id": "dharini",
+      "name": "Dharini",
+      "color": "#c2185b",
+      "voiceId": "cgSgspJ2msm6clMCkdW9",
+      "voiceName": "Jessica - Playful, Bright, Warm",
+      "stability": 0.5,
+      "similarity": 0.75,
+      "style": 0.35
+    }
+  ]
+}
