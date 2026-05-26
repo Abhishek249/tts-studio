@@ -8,385 +8,273 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <style>
     :root {
-      --md-sys-color-primary: #1a73e8;
-      --md-sys-color-on-primary: #fff;
-      --md-sys-color-primary-container: #d3e3fd;
-      --md-sys-color-on-primary-container: #0b57d0;
-      --md-sys-color-secondary: #5f6368;
-      --md-sys-color-surface: #ffffff;
-      --md-sys-color-surface-variant: #f1f3f4;
-      --md-sys-color-surface-container: #f8f9fa;
-      --md-sys-color-surface-container-high: #f1f3f4;
-      --md-sys-color-outline: #dadce0;
-      --md-sys-color-outline-variant: #e8eaed;
-      --md-sys-color-on-surface: #202124;
-      --md-sys-color-on-surface-variant: #5f6368;
-      --md-sys-color-error: #d93025;
-      --md-sys-color-success: #1e8e3e;
-      --md-sys-color-warning: #f9ab00;
-      --md-elevation-1: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
-      --md-elevation-2: 0 1px 2px rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
-      --font: 'Google Sans', 'Segoe UI', sans-serif;
-      --mono: 'Google Sans Mono', monospace;
-      --devanagari: 'Noto Serif Devanagari', serif;
+      --primary: #1a73e8;
+      --primary-container: #d3e3fd;
+      --on-primary-container: #0b57d0;
+      --surface: #ffffff;
+      --surface-variant: #f1f3f4;
+      --surface-container: #f8f9fa;
+      --outline: #dadce0;
+      --outline-variant: #e8eaed;
+      --on-surface: #202124;
+      --on-surface-variant: #5f6368;
+      --error: #d93025;
+      --success: #1e8e3e;
+      --elev1: 0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+      --font: 'Google Sans',sans-serif;
+      --mono: 'Google Sans Mono',monospace;
+      --deva: 'Noto Serif Devanagari',serif;
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--surface-container);color:var(--on-surface);font-family:var(--font);font-size:14px;}
+    .app{display:grid;grid-template-rows:64px 1fr;height:100vh;overflow:hidden;}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); font-family: var(--font); font-size: 14px; }
+    /* TOP BAR */
+    .top-bar{background:var(--surface);border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;padding:0 16px 0 8px;gap:8px;z-index:10;}
+    .logo{display:flex;align-items:center;gap:10px;padding:0 12px;}
+    .logo-icon{width:36px;height:36px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .logo-icon .material-icons-round{color:white;font-size:20px;}
+    .logo-title{font-size:18px;font-weight:500;}
+    .logo-sub{font-size:12px;color:var(--on-surface-variant);margin-top:1px;}
+    .spacer{flex:1;}
+    .status-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:500;background:var(--surface-variant);color:var(--on-surface-variant);}
+    .status-chip.connected{background:#e6f4ea;color:var(--success);}
+    .status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+    .md-field{position:relative;width:260px;}
+    .md-field input{width:100%;height:40px;padding:0 44px 0 14px;border:1px solid var(--outline);border-radius:8px;font-size:13px;font-family:var(--mono);background:var(--surface);color:var(--on-surface);outline:none;transition:border-color .2s;}
+    .md-field input:focus{border-color:var(--primary);border-width:2px;}
+    .md-field .fi{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--on-surface-variant);font-size:18px;}
+    .btn{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;border-radius:20px;font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;border:none;transition:all .2s;white-space:nowrap;}
+    .btn .material-icons-round{font-size:18px;}
+    .btn-filled{background:var(--primary);color:white;}
+    .btn-filled:hover{filter:brightness(1.05);box-shadow:var(--elev1);}
+    .btn-filled:disabled{background:rgba(0,0,0,.12);color:rgba(0,0,0,.38);cursor:not-allowed;}
+    .btn-tonal{background:var(--primary-container);color:var(--on-primary-container);}
+    .btn-tonal:hover{box-shadow:var(--elev1);}
+    .btn-tonal:disabled{background:rgba(0,0,0,.12);color:rgba(0,0,0,.38);cursor:not-allowed;}
+    .btn-outlined{background:transparent;color:var(--primary);border:1px solid var(--outline);}
+    .btn-outlined:hover{background:rgba(26,115,232,.04);}
+    .btn-outlined:disabled{color:rgba(0,0,0,.38);border-color:rgba(0,0,0,.12);cursor:not-allowed;}
+    .btn-text{background:transparent;color:var(--primary);padding:0 12px;}
+    .btn-text:hover{background:rgba(26,115,232,.08);}
 
-    /* ── App Shell ── */
-    .app { display: grid; grid-template-rows: 64px 1fr; height: 100vh; overflow: hidden; }
+    /* BODY */
+    .body{display:grid;grid-template-columns:300px 1fr;overflow:hidden;}
 
-    /* ── Top App Bar ── */
-    .top-bar {
-      background: var(--md-sys-color-surface);
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
-      display: flex; align-items: center; padding: 0 16px 0 8px;
-      gap: 8px; z-index: 10;
-    }
-    .top-bar-logo { display: flex; align-items: center; gap: 10px; padding: 0 12px; }
-    .top-bar-logo .logo-icon { width: 36px; height: 36px; background: var(--md-sys-color-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .top-bar-logo .logo-icon .material-icons-round { color: white; font-size: 20px; }
-    .top-bar-title { font-size: 18px; font-weight: 500; color: var(--md-sys-color-on-surface); }
-    .top-bar-subtitle { font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 1px; }
-    .top-bar-spacer { flex: 1; }
-    .connection-status { display: flex; align-items: center; gap: 6px; margin-right: 8px; }
-    .status-chip { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-surface-variant); }
-    .status-chip.connected { background: #e6f4ea; color: var(--md-sys-color-success); }
-    .status-chip .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    /* SIDEBAR */
+    .sidebar{background:var(--surface);border-right:1px solid var(--outline-variant);overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
+    .sec-label{padding:8px 12px 4px;font-size:11px;font-weight:600;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:.08em;}
+    .char-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .15s;position:relative;}
+    .char-item:hover{background:var(--surface-variant);}
+    .char-item.active{background:var(--primary-container);}
+    .char-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:24px;background:var(--primary);border-radius:0 2px 2px 0;}
+    .char-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;}
+    .char-det{flex:1;min-width:0;}
+    .char-nm{font-size:14px;font-weight:500;}
+    .char-vl{font-size:11px;color:var(--on-surface-variant);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+    .char-item.active .char-nm{color:var(--on-primary-container);}
+    .char-item.active .char-vl{color:var(--on-primary-container);opacity:.7;}
+    .divider{height:1px;background:var(--outline-variant);margin:8px 0;}
+    .settings-panel{padding:4px 4px 0;}
+    .set-title{font-size:12px;font-weight:600;color:var(--on-surface-variant);margin-bottom:10px;}
+    .md-select{width:100%;padding:10px 32px 10px 12px;border-radius:8px;border:1px solid var(--outline);background:var(--surface);font-size:13px;font-family:var(--font);color:var(--on-surface);outline:none;cursor:pointer;margin-bottom:12px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%235f6368'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+    .md-select:focus{border-color:var(--primary);border-width:2px;}
+    .sl-grp{margin-bottom:14px;}
+    .sl-lbl{display:flex;justify-content:space-between;margin-bottom:6px;}
+    .sl-lbl span{font-size:12px;color:var(--on-surface-variant);}
+    .sl-lbl strong{font-size:12px;font-weight:500;color:var(--primary);}
+    input[type=range]{width:100%;height:4px;border-radius:2px;outline:none;cursor:pointer;accent-color:var(--primary);}
+    .model-chips{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+    .model-chip{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--outline);background:var(--surface);color:var(--on-surface-variant);transition:all .15s;}
+    .model-chip:hover{background:var(--surface-variant);}
+    .model-chip.active{background:var(--primary);color:white;border-color:var(--primary);}
 
-    /* ── MD3 Text Field ── */
-    .md-field { position: relative; width: 260px; }
-    .md-field input {
-      width: 100%; height: 40px; padding: 0 44px 0 14px;
-      border: 1px solid var(--md-sys-color-outline);
-      border-radius: 8px; font-size: 13px; font-family: var(--mono);
-      background: var(--md-sys-color-surface);
-      color: var(--md-sys-color-on-surface); outline: none;
-      transition: border-color 0.2s;
-    }
-    .md-field input:focus { border-color: var(--md-sys-color-primary); border-width: 2px; }
-    .md-field .field-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--md-sys-color-on-surface-variant); font-size: 18px; }
+    /* MAIN */
+    .main{display:flex;flex-direction:column;overflow:hidden;background:var(--surface-container);}
+    .editor-container{flex:1;padding:16px 20px 8px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
+    .toolbar-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .tb-label{font-size:12px;color:var(--on-surface-variant);margin-right:2px;}
+    .char-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .15s;}
+    .char-chip:hover{opacity:.85;transform:translateY(-1px);}
+    .chip-dot{width:7px;height:7px;border-radius:50%;}
+    .emo-chip{padding:4px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:1px solid var(--outline);background:var(--surface);color:var(--on-surface-variant);font-family:var(--deva);transition:all .15s;}
+    .emo-chip:hover{background:var(--primary-container);color:var(--on-primary-container);border-color:transparent;}
+    .script-card{flex:1;background:var(--surface);border-radius:16px;border:1px solid var(--outline-variant);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elev1);min-height:0;}
+    .sc-hdr{padding:12px 16px 8px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;gap:8px;}
+    .sc-title{font-size:13px;font-weight:500;color:var(--on-surface-variant);flex:1;}
+    .cc-badge{font-size:11px;color:var(--on-surface-variant);background:var(--surface-variant);padding:3px 8px;border-radius:999px;}
+    textarea{flex:1;width:100%;min-height:200px;border:none;outline:none;resize:none;font-family:var(--deva);font-size:15px;line-height:1.9;color:var(--on-surface);padding:16px;background:transparent;}
+    textarea::placeholder{color:var(--on-surface-variant);opacity:.6;}
 
-    /* ── MD3 Filled Button ── */
-    .md-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      height: 40px; padding: 0 20px; border-radius: 20px;
-      font-size: 14px; font-weight: 500; font-family: var(--font);
-      cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap;
-    }
-    .md-btn .material-icons-round { font-size: 18px; }
-    .md-btn-filled { background: var(--md-sys-color-primary); color: white; }
-    .md-btn-filled:hover { box-shadow: var(--md-elevation-1); filter: brightness(1.05); }
-    .md-btn-filled:disabled { background: rgba(0,0,0,0.12); color: rgba(0,0,0,0.38); cursor: not-allowed; box-shadow: none; }
-    .md-btn-tonal { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
-    .md-btn-tonal:hover { box-shadow: var(--md-elevation-1); }
-    .md-btn-tonal:disabled { background: rgba(0,0,0,0.12); color: rgba(0,0,0,0.38); cursor: not-allowed; }
-    .md-btn-outlined { background: transparent; color: var(--md-sys-color-primary); border: 1px solid var(--md-sys-color-outline); }
-    .md-btn-outlined:hover { background: rgba(26,115,232,0.04); }
-    .md-btn-text { background: transparent; color: var(--md-sys-color-primary); padding: 0 12px; }
-    .md-btn-text:hover { background: rgba(26,115,232,0.08); }
+    /* ACTION BAR */
+    .action-bar{background:var(--surface);border-top:1px solid var(--outline-variant);padding:12px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .status-msg{flex:1;font-size:13px;color:var(--on-surface-variant);padding:0 4px;display:flex;align-items:center;gap:6px;min-width:0;}
+    .status-msg.ok{color:var(--success);}
+    .status-msg.err{color:var(--error);}
 
-    /* ── Body ── */
-    .body { display: grid; grid-template-columns: 300px 1fr; overflow: hidden; }
+    /* ONE FILE BUTTON — highlighted */
+    .btn-one-file{background:#0b57d0;color:white;font-size:13px;padding:0 20px;height:44px;border-radius:22px;border:none;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(11,87,208,.35);}
+    .btn-one-file:hover{filter:brightness(1.08);box-shadow:0 4px 12px rgba(11,87,208,.45);}
+    .btn-one-file:disabled{background:rgba(0,0,0,.12);color:rgba(0,0,0,.38);cursor:not-allowed;box-shadow:none;}
+    .btn-one-file .material-icons-round{font-size:20px;}
+    .one-file-hint{font-size:11px;color:var(--on-surface-variant);margin-top:4px;}
 
-    /* ── Navigation Rail / Sidebar ── */
-    .sidebar {
-      background: var(--md-sys-color-surface);
-      border-right: 1px solid var(--md-sys-color-outline-variant);
-      overflow-y: auto; padding: 16px 12px;
-      display: flex; flex-direction: column; gap: 4px;
-    }
+    /* PROGRESS */
+    .progress-wrap{width:100%;background:var(--outline-variant);border-radius:2px;height:3px;margin-top:8px;overflow:hidden;}
+    .progress-fill{height:100%;background:var(--primary);border-radius:2px;width:0%;transition:width .3s;}
 
-    .section-header { padding: 8px 12px 4px; font-size: 11px; font-weight: 600; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; }
+    /* AUDIO PANEL */
+    .audio-panel{background:var(--surface);border-top:1px solid var(--outline-variant);max-height:220px;overflow-y:auto;}
+    .ap-hdr{padding:10px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--outline-variant);position:sticky;top:0;background:var(--surface);z-index:1;}
+    .ap-title{font-size:13px;font-weight:500;flex:1;}
+    .audio-rows{padding:6px 12px;display:flex;flex-direction:column;gap:4px;}
+    .audio-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid var(--outline-variant);background:var(--surface-container);transition:background .15s;}
+    .audio-row:hover{background:var(--surface-variant);}
+    .audio-row.merged{border:2px solid var(--primary);background:#f0f4ff;}
+    .a-bar{width:3px;height:28px;border-radius:2px;flex-shrink:0;}
+    .a-char{font-size:12px;font-weight:500;min-width:90px;}
+    .a-prev{flex:1;font-size:13px;font-family:var(--deva);color:var(--on-surface-variant);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .a-acts{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:32px;height:32px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;background:transparent;color:var(--on-surface-variant);}
+    .icon-btn .material-icons-round{font-size:18px;}
+    .icon-btn:hover{background:var(--surface-variant);}
+    .icon-btn.playing{background:var(--primary-container);color:var(--primary);}
 
-    /* Character List Items */
-    .char-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 12px; border-radius: 12px; cursor: pointer;
-      transition: background 0.15s; position: relative;
-    }
-    .char-item:hover { background: var(--md-sys-color-surface-variant); }
-    .char-item.active { background: var(--md-sys-color-primary-container); }
-    .char-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 24px; background: var(--md-sys-color-primary); border-radius: 0 2px 2px 0; }
-    .char-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
-    .char-details { flex: 1; min-width: 0; }
-    .char-name { font-size: 14px; font-weight: 500; color: var(--md-sys-color-on-surface); }
-    .char-voice-name { font-size: 12px; color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-    .char-item.active .char-name { color: var(--md-sys-color-on-primary-container); }
-    .char-item.active .char-voice-name { color: var(--md-sys-color-on-primary-container); opacity: 0.7; }
-
-    .divider { height: 1px; background: var(--md-sys-color-outline-variant); margin: 8px 0; }
-
-    /* Settings Panel */
-    .settings-panel { padding: 4px 4px 0; }
-    .settings-section-title { font-size: 12px; font-weight: 600; color: var(--md-sys-color-on-surface-variant); margin-bottom: 10px; }
-
-    /* MD3 Select */
-    .md-select {
-      width: 100%; padding: 10px 12px; border-radius: 8px;
-      border: 1px solid var(--md-sys-color-outline);
-      background: var(--md-sys-color-surface);
-      font-size: 13px; font-family: var(--font);
-      color: var(--md-sys-color-on-surface); outline: none;
-      cursor: pointer; margin-bottom: 12px; appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%235f6368'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center;
-      padding-right: 32px;
-    }
-    .md-select:focus { border-color: var(--md-sys-color-primary); border-width: 2px; }
-
-    /* Slider */
-    .slider-group { margin-bottom: 14px; }
-    .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .slider-label span { font-size: 12px; color: var(--md-sys-color-on-surface-variant); }
-    .slider-label strong { font-size: 12px; font-weight: 500; color: var(--md-sys-color-primary); min-width: 30px; text-align: right; }
-    input[type=range] {
-      width: 100%; height: 4px; border-radius: 2px; outline: none; cursor: pointer;
-      accent-color: var(--md-sys-color-primary);
-    }
-
-    /* Model Chips */
-    .model-chips { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-    .model-chip {
-      padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500;
-      cursor: pointer; border: 1px solid var(--md-sys-color-outline);
-      background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface-variant);
-      transition: all 0.15s;
-    }
-    .model-chip:hover { background: var(--md-sys-color-surface-variant); }
-    .model-chip.active { background: var(--md-sys-color-primary); color: white; border-color: var(--md-sys-color-primary); }
-
-    /* ── Main Content ── */
-    .main { display: flex; flex-direction: column; overflow: hidden; background: var(--md-sys-color-surface-container); }
-
-    .editor-container { flex: 1; padding: 16px 20px 8px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-
-    /* Tag Toolbar */
-    .toolbar-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .toolbar-label { font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-right: 2px; }
-    .char-chip {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 500;
-      cursor: pointer; border: 1px solid transparent; transition: all 0.15s;
-    }
-    .char-chip:hover { opacity: 0.85; transform: translateY(-1px); }
-    .char-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
-    .emo-chip {
-      padding: 4px 10px; border-radius: 999px; font-size: 12px;
-      cursor: pointer; border: 1px solid var(--md-sys-color-outline);
-      background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--devanagari); transition: all 0.15s;
-    }
-    .emo-chip:hover { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); border-color: transparent; }
-
-    /* Script Card */
-    .script-card {
-      flex: 1; background: var(--md-sys-color-surface);
-      border-radius: 16px; border: 1px solid var(--md-sys-color-outline-variant);
-      display: flex; flex-direction: column; overflow: hidden;
-      box-shadow: var(--md-elevation-1); min-height: 0;
-    }
-    .script-card-header { padding: 12px 16px 8px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center; gap: 8px; }
-    .script-card-title { font-size: 13px; font-weight: 500; color: var(--md-sys-color-on-surface-variant); flex: 1; }
-    .char-count-badge { font-size: 11px; color: var(--md-sys-color-on-surface-variant); background: var(--md-sys-color-surface-variant); padding: 3px 8px; border-radius: 999px; }
-    textarea {
-      flex: 1; width: 100%; min-height: 200px;
-      border: none; outline: none; resize: none;
-      font-family: var(--devanagari); font-size: 15px; line-height: 1.9;
-      color: var(--md-sys-color-on-surface); padding: 16px;
-      background: transparent;
-    }
-    textarea::placeholder { color: var(--md-sys-color-on-surface-variant); opacity: 0.6; }
-
-    /* ── Action Bar ── */
-    .action-bar {
-      background: var(--md-sys-color-surface);
-      border-top: 1px solid var(--md-sys-color-outline-variant);
-      padding: 12px 20px; display: flex; align-items: center; gap: 10px;
-    }
-    .status-message { flex: 1; font-size: 13px; color: var(--md-sys-color-on-surface-variant); padding: 0 8px; display: flex; align-items: center; gap: 6px; }
-    .status-message.ok { color: var(--md-sys-color-success); }
-    .status-message.err { color: var(--md-sys-color-error); }
-
-    /* Progress indicator */
-    .progress-bar { height: 3px; background: var(--md-sys-color-outline-variant); border-radius: 2px; overflow: hidden; margin-top: 6px; }
-    .progress-fill { height: 100%; background: var(--md-sys-color-primary); border-radius: 2px; width: 0%; transition: width 0.3s; }
-
-    /* ── Audio Output Panel ── */
-    .audio-panel {
-      background: var(--md-sys-color-surface);
-      border-top: 1px solid var(--md-sys-color-outline-variant);
-      max-height: 210px; overflow-y: auto;
-    }
-    .audio-panel-header { padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--md-sys-color-outline-variant); position: sticky; top: 0; background: var(--md-sys-color-surface); z-index: 1; }
-    .audio-panel-title { font-size: 13px; font-weight: 500; flex: 1; }
-    .audio-rows { padding: 6px 12px; display: flex; flex-direction: column; gap: 4px; }
-    .audio-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 12px; border-radius: 10px; border: 1px solid var(--md-sys-color-outline-variant);
-      background: var(--md-sys-color-surface-container); transition: background 0.15s;
-    }
-    .audio-row:hover { background: var(--md-sys-color-surface-variant); }
-    .audio-color-bar { width: 3px; height: 28px; border-radius: 2px; flex-shrink: 0; }
-    .audio-char { font-size: 12px; font-weight: 500; min-width: 90px; }
-    .audio-preview { flex: 1; font-size: 13px; font-family: var(--devanagari); color: var(--md-sys-color-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .audio-actions { display: flex; gap: 6px; flex-shrink: 0; }
-    .icon-btn {
-      width: 32px; height: 32px; border-radius: 50%; border: none;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background 0.15s; background: transparent;
-      color: var(--md-sys-color-on-surface-variant);
-    }
-    .icon-btn .material-icons-round { font-size: 18px; }
-    .icon-btn:hover { background: var(--md-sys-color-surface-variant); }
-    .icon-btn.playing { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
-
-    /* Spinner */
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(26,115,232,0.2); border-top-color: var(--md-sys-color-primary); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--md-sys-color-outline); border-radius: 99px; }
-
-    @media (max-width: 768px) { .body { grid-template-columns: 1fr; } .sidebar { display: none; } }
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(26,115,232,.2);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+    ::-webkit-scrollbar{width:6px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:var(--outline);border-radius:99px;}
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- TOP APP BAR -->
   <header class="top-bar">
-    <div class="top-bar-logo">
+    <div class="logo">
       <div class="logo-icon"><span class="material-icons-round">mic</span></div>
       <div>
-        <div class="top-bar-title">TTS Studio</div>
-        <div class="top-bar-subtitle">ElevenLabs · Multi-character</div>
+        <div class="logo-title">TTS Studio</div>
+        <div class="logo-sub">ElevenLabs · Multi-character</div>
       </div>
     </div>
-    <div class="top-bar-spacer"></div>
+    <div class="spacer"></div>
     <div id="statusChip" class="status-chip">
       <span class="status-dot"></span>
       <span id="statusChipText">Not connected</span>
     </div>
     <div class="md-field">
       <input type="password" id="apiKey" placeholder="ElevenLabs API key…" autocomplete="off" />
-      <span class="material-icons-round field-icon">key</span>
+      <span class="material-icons-round fi">key</span>
     </div>
-    <button class="md-btn md-btn-filled" onclick="loadVoices()">
+    <button class="btn btn-filled" onclick="loadVoices()">
       <span class="material-icons-round">sync</span> Connect
     </button>
   </header>
 
   <div class="body">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="section-header">Characters</div>
+      <div class="sec-label">Characters</div>
       <div id="charList"></div>
-
-      <button class="md-btn md-btn-outlined" style="width:100%; margin: 8px 0 16px; border-radius:12px; height:38px;" onclick="addCharacter()">
+      <button class="btn btn-outlined" style="width:100%;margin:8px 0 16px;border-radius:12px;height:38px;" onclick="addCharacter()">
         <span class="material-icons-round" style="font-size:16px;">person_add</span> Add character
       </button>
-
       <div class="divider"></div>
-
       <div id="charSettingsPanel" style="display:none;" class="settings-panel">
-        <div class="settings-section-title" id="charSettingsLabel">Voice & Settings</div>
+        <div class="set-title" id="charSettingsLabel">Voice & Settings</div>
         <select class="md-select" id="voiceSelect" onchange="updateCharVoice()">
           <option value="">— assign voice —</option>
         </select>
-        <div class="slider-group">
-          <div class="slider-label"><span>Stability</span><strong id="stabVal">0.50</strong></div>
-          <input type="range" min="0" max="1" step="0.05" value="0.5" id="stabSlider"
-            oninput="document.getElementById('stabVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+        <div class="sl-grp">
+          <div class="sl-lbl"><span>Stability</span><strong id="stabVal">0.50</strong></div>
+          <input type="range" min="0" max="1" step="0.05" value="0.5" id="stabSlider" oninput="document.getElementById('stabVal').textContent=parseFloat(this.value).toFixed(2);saveCharSettings()"/>
         </div>
-        <div class="slider-group">
-          <div class="slider-label"><span>Similarity boost</span><strong id="simVal">0.75</strong></div>
-          <input type="range" min="0" max="1" step="0.05" value="0.75" id="simSlider"
-            oninput="document.getElementById('simVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+        <div class="sl-grp">
+          <div class="sl-lbl"><span>Similarity boost</span><strong id="simVal">0.75</strong></div>
+          <input type="range" min="0" max="1" step="0.05" value="0.75" id="simSlider" oninput="document.getElementById('simVal').textContent=parseFloat(this.value).toFixed(2);saveCharSettings()"/>
         </div>
-        <div class="slider-group">
-          <div class="slider-label"><span>Style (v3)</span><strong id="styleVal">0.30</strong></div>
-          <input type="range" min="0" max="1" step="0.05" value="0.3" id="styleSlider"
-            oninput="document.getElementById('styleVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+        <div class="sl-grp">
+          <div class="sl-lbl"><span>Style (v3)</span><strong id="styleVal">0.30</strong></div>
+          <input type="range" min="0" max="1" step="0.05" value="0.3" id="styleSlider" oninput="document.getElementById('styleVal').textContent=parseFloat(this.value).toFixed(2);saveCharSettings()"/>
         </div>
         <div class="divider"></div>
       </div>
-
-      <div class="section-header" style="margin-top:4px;">Model</div>
+      <div class="sec-label" style="margin-top:4px;">Model</div>
       <div class="model-chips">
         <div class="model-chip active" id="pill-eleven_v3" onclick="setModel('eleven_v3',this)">v3 alpha</div>
         <div class="model-chip" id="pill-eleven_multilingual_v2" onclick="setModel('eleven_multilingual_v2',this)">ML v2</div>
         <div class="model-chip" id="pill-eleven_turbo_v2_5" onclick="setModel('eleven_turbo_v2_5',this)">Turbo</div>
       </div>
-      <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); padding: 0 4px;">
-        v3 recommended for Hindi expressiveness
-      </div>
+      <div style="font-size:11px;color:var(--on-surface-variant);padding:0 4px;">v3 recommended for Hindi</div>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
       <div class="editor-container">
-
-        <!-- Character tag chips -->
         <div class="toolbar-row" id="tagBar"></div>
-
-        <!-- Emotion chips -->
         <div class="toolbar-row">
-          <span class="toolbar-label">Emotions:</span>
-          <span class="emo-chip" onclick="insertAtCursor('[धीरे]')">[धीरे]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[भावुक]')">[भावुक]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[रोते हुए]')">[रोते हुए]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[शांत]')">[शांत]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[गर्जना]')">[गर्जना]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[whisper]')">[whisper]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[excited]')">[excited]</span>
-          <span class="emo-chip" onclick="insertAtCursor('[sad]')">[sad]</span>
+          <span class="tb-label">Emotions:</span>
+          <span class="emo-chip" onclick="ins('[भावुक] ')">[भावुक]</span>
+          <span class="emo-chip" onclick="ins('[शांत] ')">[शांत]</span>
+          <span class="emo-chip" onclick="ins('[रोते हुए] ')">[रोते हुए]</span>
+          <span class="emo-chip" onclick="ins('[धीरे] ')">[धीरे]</span>
+          <span class="emo-chip" onclick="ins('[गर्जना] ')">[गर्जना]</span>
+          <span class="emo-chip" onclick="ins('[whisper] ')">[whisper]</span>
+          <span class="emo-chip" onclick="ins('[excited] ')">[excited]</span>
+          <span class="emo-chip" onclick="ins('[sad] ')">[sad]</span>
+          <span class="emo-chip" onclick="ins('[reverent] ')">[reverent]</span>
         </div>
-
-        <!-- Script Editor Card -->
         <div class="script-card">
-          <div class="script-card-header">
-            <span class="material-icons-round" style="font-size:18px; color:var(--md-sys-color-on-surface-variant);">edit_note</span>
-            <span class="script-card-title">Script</span>
-            <span class="char-count-badge" id="charCount">0 characters</span>
+          <div class="sc-hdr">
+            <span class="material-icons-round" style="font-size:18px;color:var(--on-surface-variant);">edit_note</span>
+            <span class="sc-title">Script</span>
+            <span class="cc-badge" id="charCount">0 characters</span>
           </div>
-          <textarea id="scriptBox" spellcheck="false" oninput="updateCharCount()"
-            placeholder="[narrator] यह उस महान काल की बात है — इस अवसर्पिणी के चतुर्थ आरक के अन्तिम समय की।
+          <textarea id="scriptBox" spellcheck="false" oninput="updateCount()"
+            placeholder="[narrator] Yeh us mahaan kaal ki baat hai...
 
-[gautam] [भावुक] हे प्रभो! मैं अपने माता-पिता को पूछकर श्रमण दीक्षा अंगीकार करूँगा।
+[sudharma] He Jambu! Shraman Bhagwan Mahaveer ne antakrit dasha ke aath varg kahe hain.
 
-[arishtanemi] [शांत] वत्स! जाओ। माता-पिता से आज्ञा लो। लौट आना।
+[jambu] [reverent] Gurudev, pratham varg mein kaun se adhyayan hain?
 
-[dharini] [रोते हुए] जाओ बेटा। मोक्ष-मार्ग पर जाओ। माँ का आशीष है।"></textarea>
+[sudharma] Pratham varg mein das adhyayan hain — Gautam, Samudra, Sagar..."></textarea>
         </div>
-
       </div>
 
       <!-- ACTION BAR -->
       <div class="action-bar">
-        <button class="md-btn md-btn-filled" id="btnGenAll" onclick="generateAll()" disabled>
-          <span class="material-icons-round">auto_awesome</span> Generate all
+
+        <!-- PRIMARY: Generate as one file -->
+        <div style="display:flex;flex-direction:column;">
+          <button class="btn-one-file" id="btnOneFile" onclick="generateOneFile()" disabled>
+            <span class="material-icons-round">merge_type</span>
+            Generate as one file
+          </button>
+          <div class="one-file-hint">All characters → single MP3</div>
+        </div>
+
+        <div style="width:1px;height:44px;background:var(--outline-variant);margin:0 4px;"></div>
+
+        <!-- SECONDARY actions -->
+        <button class="btn btn-tonal" id="btnGenAll" onclick="generateAll()" disabled>
+          <span class="material-icons-round">queue</span> Generate segments
         </button>
-        <button class="md-btn md-btn-tonal" id="btnGenFirst" onclick="generateFirst()" disabled>
+        <button class="btn btn-outlined" id="btnFirst" onclick="generateFirst()" disabled>
           <span class="material-icons-round">play_arrow</span> Test first
         </button>
-        <div class="status-message" id="statusMsg">
-          Connect your ElevenLabs API key to start
-        </div>
-        <button class="md-btn md-btn-text" onclick="clearAudios()">
-          <span class="material-icons-round">delete_sweep</span> Clear
+
+        <div class="status-msg" id="statusMsg">Connect API key to start</div>
+        <button class="btn btn-text" onclick="clearAll()">
+          <span class="material-icons-round">delete_sweep</span>
         </button>
       </div>
 
-      <!-- AUDIO OUTPUT PANEL -->
+      <!-- AUDIO PANEL -->
       <div class="audio-panel" id="audioPanel" style="display:none;">
-        <div class="audio-panel-header">
-          <span class="material-icons-round" style="font-size:18px; color:var(--md-sys-color-primary);">queue_music</span>
-          <span class="audio-panel-title" id="audioPanelTitle">Generated audio</span>
-          <button class="md-btn md-btn-outlined" style="height:32px; padding:0 12px; font-size:12px;" onclick="downloadAll()">
+        <div class="ap-hdr">
+          <span class="material-icons-round" style="font-size:18px;color:var(--primary);">queue_music</span>
+          <span class="ap-title" id="apTitle">Generated audio</span>
+          <button class="btn btn-outlined" style="height:32px;padding:0 12px;font-size:12px;" onclick="dlAll()">
             <span class="material-icons-round" style="font-size:16px;">download</span> Download all
           </button>
         </div>
@@ -398,157 +286,203 @@
 </div>
 
 <script>
-const PALETTE = ['#1a73e8','#1e8e3e','#e8710a','#9334e6','#d93025','#0097a7','#c2185b'];
-
-let voices = [], characters = [
-  { id:'narrator',    name:'Narrator',    voiceId:'', color:PALETTE[0], stability:0.5, similarity:0.75, style:0.3 },
-  { id:'gautam',      name:'Gautam',      voiceId:'', color:PALETTE[1], stability:0.5, similarity:0.75, style:0.4 },
-  { id:'dharini',     name:'Dharini',     voiceId:'', color:PALETTE[2], stability:0.5, similarity:0.75, style:0.35 },
-  { id:'arishtanemi', name:'Arishtanemi', voiceId:'', color:PALETTE[3], stability:0.6, similarity:0.75, style:0.25 },
+const PAL=['#1a73e8','#1e8e3e','#e8710a','#9334e6','#d93025','#0097a7','#c2185b','#f9ab00'];
+let voices=[],characters=[
+  {id:'narrator',    name:'Narrator',    voiceId:'',color:PAL[0],stability:.5,similarity:.75,style:.3},
+  {id:'sudharma',    name:'Sudharma',    voiceId:'',color:PAL[1],stability:.6,similarity:.75,style:.25},
+  {id:'jambu',       name:'Jambu',       voiceId:'',color:PAL[3],stability:.5,similarity:.75,style:.35},
+  {id:'gautam',      name:'Gautam',      voiceId:'',color:PAL[2],stability:.5,similarity:.75,style:.4},
+  {id:'dharini',     name:'Dharini',     voiceId:'',color:PAL[6],stability:.5,similarity:.75,style:.35},
+  {id:'arishtanemi', name:'Arishtanemi', voiceId:'',color:PAL[4],stability:.65,similarity:.75,style:.2},
 ];
-let activeCharId = 'narrator', selectedModel = 'eleven_v3', audios = [], playingIdx = null;
+let activeCharId='narrator',selectedModel='eleven_v3',audios=[],playingIdx=null;
 
-function renderChars() {
-  document.getElementById('charList').innerHTML = characters.map(c => `
+function renderChars(){
+  document.getElementById('charList').innerHTML=characters.map(c=>`
     <div class="char-item ${c.id===activeCharId?'active':''}" onclick="selectChar('${c.id}')">
-      <div class="char-avatar" style="background:${c.color}1a; color:${c.color}">
-        ${c.name.slice(0,2).toUpperCase()}
-      </div>
-      <div class="char-details">
-        <div class="char-name">${c.name}</div>
-        <div class="char-voice-name">${c.voiceId ? (voices.find(v=>v.voice_id===c.voiceId)?.name||'Voice assigned') : 'No voice assigned'}</div>
+      <div class="char-av" style="background:${c.color}1a;color:${c.color}">${c.name.slice(0,2).toUpperCase()}</div>
+      <div class="char-det">
+        <div class="char-nm">${c.name}</div>
+        <div class="char-vl">${c.voiceId?(voices.find(v=>v.voice_id===c.voiceId)?.name||'Voice assigned'):'No voice assigned'}</div>
       </div>
     </div>`).join('');
   renderTagBar();
   renderSettingsPanel();
 }
 
-function renderTagBar() {
-  document.getElementById('tagBar').innerHTML =
-    `<span class="toolbar-label">Insert:</span>` +
+function renderTagBar(){
+  document.getElementById('tagBar').innerHTML=
+    `<span class="tb-label">Insert:</span>`+
     characters.map(c=>`
-      <div class="char-chip" style="background:${c.color}12; border-color:${c.color}30; color:${c.color}" onclick="insertAtCursor('[${c.id}] ')">
-        <span class="char-chip-dot" style="background:${c.color}"></span>${c.name}
+      <div class="char-chip" style="background:${c.color}12;border-color:${c.color}30;color:${c.color}" onclick="ins('[${c.id}] ')">
+        <span class="chip-dot" style="background:${c.color}"></span>${c.name}
       </div>`).join('');
 }
 
-function renderSettingsPanel() {
-  const c = characters.find(x=>x.id===activeCharId); if(!c) return;
-  document.getElementById('charSettingsPanel').style.display = 'block';
-  document.getElementById('charSettingsLabel').textContent = `${c.name} — voice & settings`;
-  ['stab','sim','style'].forEach(k => {
-    const map = {stab:'stability',sim:'similarity',style:'style'};
-    document.getElementById(k+'Slider').value = c[map[k]];
-    document.getElementById(k+'Val').textContent = c[map[k]].toFixed(2);
-  });
-  const sel = document.getElementById('voiceSelect');
-  sel.innerHTML = '<option value="">— assign voice —</option>' +
+function renderSettingsPanel(){
+  const c=characters.find(x=>x.id===activeCharId);if(!c)return;
+  document.getElementById('charSettingsPanel').style.display='block';
+  document.getElementById('charSettingsLabel').textContent=`${c.name} — voice & settings`;
+  document.getElementById('stabSlider').value=c.stability;
+  document.getElementById('simSlider').value=c.similarity;
+  document.getElementById('styleSlider').value=c.style;
+  document.getElementById('stabVal').textContent=c.stability.toFixed(2);
+  document.getElementById('simVal').textContent=c.similarity.toFixed(2);
+  document.getElementById('styleVal').textContent=c.style.toFixed(2);
+  const sel=document.getElementById('voiceSelect');
+  sel.innerHTML='<option value="">— assign voice —</option>'+
     voices.map(v=>`<option value="${v.voice_id}" ${v.voice_id===c.voiceId?'selected':''}>${v.name}${v.category==='cloned'?' 🎙️':v.category==='generated'?' ✨':''}</option>`).join('');
 }
 
-function selectChar(id) { saveCharSettings(); activeCharId=id; renderChars(); }
-function updateCharVoice() { const c=characters.find(x=>x.id===activeCharId); if(c){c.voiceId=document.getElementById('voiceSelect').value; renderChars();} }
-function saveCharSettings() {
-  const c=characters.find(x=>x.id===activeCharId); if(!c) return;
+function selectChar(id){saveCharSettings();activeCharId=id;renderChars();}
+function updateCharVoice(){const c=characters.find(x=>x.id===activeCharId);if(c){c.voiceId=document.getElementById('voiceSelect').value;renderChars();}}
+function saveCharSettings(){
+  const c=characters.find(x=>x.id===activeCharId);if(!c)return;
   c.stability=parseFloat(document.getElementById('stabSlider').value);
   c.similarity=parseFloat(document.getElementById('simSlider').value);
   c.style=parseFloat(document.getElementById('styleSlider').value);
 }
-function addCharacter() {
-  const name=prompt('Character name:'); if(!name?.trim()) return;
+function addCharacter(){
+  const name=prompt('Character name:');if(!name?.trim())return;
   const id=name.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
   if(characters.find(c=>c.id===id)){alert('Already exists');return;}
-  characters.push({id,name:name.trim(),voiceId:'',color:PALETTE[characters.length%PALETTE.length],stability:0.5,similarity:0.75,style:0.3});
-  activeCharId=id; renderChars();
+  characters.push({id,name:name.trim(),voiceId:'',color:PAL[characters.length%PAL.length],stability:.5,similarity:.75,style:.3});
+  activeCharId=id;renderChars();
 }
-function setModel(m,el) {
+function setModel(m,el){
   selectedModel=m;
   document.querySelectorAll('.model-chip').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
 }
 
-async function loadVoices() {
+async function loadVoices(){
   const key=document.getElementById('apiKey').value.trim();
   if(!key){setStatus('Enter API key first','err');return;}
   setStatus('<span class="spinner"></span> Connecting…','');
-  try {
+  try{
     const res=await fetch('https://api.elevenlabs.io/v1/voices',{headers:{'xi-api-key':key}});
-    if(!res.ok) throw new Error('Auth failed — check your API key ('+res.status+')');
-    const data=await res.json(); voices=data.voices||[];
+    if(!res.ok)throw new Error('Auth failed ('+res.status+')');
+    const data=await res.json();voices=data.voices||[];
     const chip=document.getElementById('statusChip');
     chip.className='status-chip connected';
     document.getElementById('statusChipText').textContent=`${voices.length} voices`;
-    ['btnGenAll','btnGenFirst'].forEach(id=>document.getElementById(id).disabled=false);
+    ['btnOneFile','btnGenAll','btnFirst'].forEach(id=>document.getElementById(id).disabled=false);
     renderChars();
     setStatus(`Connected — ${voices.length} voices loaded`,'ok');
-  } catch(e) { setStatus('Error: '+e.message,'err'); }
+  }catch(e){setStatus('Error: '+e.message,'err');}
 }
 
-function parseScript(txt) {
+function parseScript(txt){
   return txt.split('\n').filter(l=>l.trim()).map(line=>{
     const m=line.match(/^\[([^\]]+)\]\s*((?:\[[^\]]+\]\s*)*)(.+)/);
     return m?{charId:m[1].trim().toLowerCase().replace(/\s+/g,'_'),emotions:m[2].trim(),text:m[3].trim()}:null;
   }).filter(Boolean);
 }
 
-async function callTTS(seg) {
+async function callTTS(seg){
   const key=document.getElementById('apiKey').value.trim();
   const char=characters.find(c=>c.id===seg.charId);
-  if(!char) throw new Error(`Unknown character: [${seg.charId}]`);
-  if(!char.voiceId) throw new Error(`No voice assigned to ${char.name} — assign one in the sidebar`);
+  if(!char)throw new Error(`Unknown character: [${seg.charId}]`);
+  if(!char.voiceId)throw new Error(`No voice assigned to ${char.name}`);
   const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${char.voiceId}`,{
     method:'POST',
     headers:{'xi-api-key':key,'Content-Type':'application/json','Accept':'audio/mpeg'},
-    body:JSON.stringify({text:seg.emotions?`${seg.emotions} ${seg.text}`:seg.text,model_id:selectedModel,voice_settings:{stability:char.stability,similarity_boost:char.similarity,style:char.style,use_speaker_boost:true}})
+    body:JSON.stringify({
+      text:seg.emotions?`${seg.emotions} ${seg.text}`:seg.text,
+      model_id:selectedModel,
+      voice_settings:{stability:char.stability,similarity_boost:char.similarity,style:char.style,use_speaker_boost:true}
+    })
   });
-  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.detail?.message||`API error ${res.status}`);}
-  return URL.createObjectURL(await res.blob());
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.detail?.message||`API ${res.status}`);}
+  return await res.arrayBuffer();
 }
 
-async function generateFirst() {
-  const segs=parseScript(document.getElementById('scriptBox').value);
-  if(!segs.length){setStatus('No [character] segments found','err');return;}
-  setBusy(true);
-  try {
-    setStatus('<span class="spinner"></span> Generating test segment…','');
-    const url=await callTTS(segs[0]);
-    audios.unshift({...segs[0],url,id:Date.now()});
-    renderAudios(); setStatus('Test segment ready — play it below','ok');
-  } catch(e){setStatus('Error: '+e.message,'err');}
-  setBusy(false);
-}
-
-async function generateAll() {
+// ── GENERATE AS ONE FILE ──
+async function generateOneFile(){
   saveCharSettings();
   const segs=parseScript(document.getElementById('scriptBox').value);
   if(!segs.length){setStatus('No [character] segments found','err');return;}
-  setBusy(true); audios=[]; renderAudios();
+  setBusy(true);audios=[];renderAudios();
+
+  const buffers=[];
   for(let i=0;i<segs.length;i++){
-    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,42)}…"`,'');
+    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,40)}…"`,'');
     try{
-      const url=await callTTS(segs[i]);
-      audios.push({...segs[i],url,id:Date.now()+i}); renderAudios();
-      await new Promise(r=>setTimeout(r,300));
-    }catch(e){setStatus('Stopped at segment '+(i+1)+': '+e.message,'err');setBusy(false);return;}
+      const buf=await callTTS(segs[i]);
+      buffers.push({buf,seg:segs[i]});
+      // small silence between segments (0.4s at 44100Hz stereo = ~70KB but we just concat MP3s)
+    }catch(e){setStatus('Error at '+(i+1)+': '+e.message,'err');setBusy(false);return;}
   }
-  setStatus(`All ${audios.length} segments generated!`,'ok'); setBusy(false);
+
+  // Merge all ArrayBuffers into one Blob
+  setStatus('<span class="spinner"></span> Merging audio…','');
+  const merged=new Blob(buffers.map(b=>b.buf),{type:'audio/mpeg'});
+  const mergedUrl=URL.createObjectURL(merged);
+
+  // Add merged file first
+  audios.push({charId:'__merged__',text:'Complete story — all characters',emotions:'',url:mergedUrl,merged:true,id:Date.now()});
+  // Also add individual segments for reference
+  buffers.forEach((b,i)=>{
+    const url=URL.createObjectURL(new Blob([b.buf],{type:'audio/mpeg'}));
+    audios.push({...b.seg,url,id:Date.now()+i+1});
+  });
+
+  renderAudios();
+  setStatus(`Done! Full story merged + ${buffers.length} individual segments`,'ok');
+  setBusy(false);
 }
 
-function setBusy(b) { ['btnGenAll','btnGenFirst'].forEach(id=>document.getElementById(id).disabled=b); }
+// ── GENERATE ALL SEGMENTS ──
+async function generateAll(){
+  saveCharSettings();
+  const segs=parseScript(document.getElementById('scriptBox').value);
+  if(!segs.length){setStatus('No [character] segments found','err');return;}
+  setBusy(true);audios=[];renderAudios();
+  for(let i=0;i<segs.length;i++){
+    setStatus(`<span class="spinner"></span> ${i+1}/${segs.length} — ${segs[i].charId}: "${segs[i].text.slice(0,40)}…"`,'');
+    try{
+      const buf=await callTTS(segs[i]);
+      const url=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
+      audios.push({...segs[i],url,id:Date.now()+i});renderAudios();
+      await new Promise(r=>setTimeout(r,300));
+    }catch(e){setStatus('Stopped at '+(i+1)+': '+e.message,'err');setBusy(false);return;}
+  }
+  setStatus(`All ${audios.length} segments generated!`,'ok');setBusy(false);
+}
 
-function renderAudios() {
+async function generateFirst(){
+  const segs=parseScript(document.getElementById('scriptBox').value);
+  if(!segs.length){setStatus('No [character] segments found','err');return;}
+  setBusy(true);
+  try{
+    setStatus('<span class="spinner"></span> Generating test segment…','');
+    const buf=await callTTS(segs[0]);
+    const url=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
+    audios.unshift({...segs[0],url,id:Date.now()});renderAudios();
+    setStatus('Test ready — play below','ok');
+  }catch(e){setStatus('Error: '+e.message,'err');}
+  setBusy(false);
+}
+
+function setBusy(b){['btnOneFile','btnGenAll','btnFirst'].forEach(id=>document.getElementById(id).disabled=b);}
+
+function renderAudios(){
   const panel=document.getElementById('audioPanel');
   if(!audios.length){panel.style.display='none';return;}
   panel.style.display='block';
-  document.getElementById('audioPanelTitle').textContent=`${audios.length} segment${audios.length>1?'s':''} generated`;
+  document.getElementById('apTitle').textContent=`${audios.length} audio file${audios.length>1?'s':''}`;
   document.getElementById('audioList').innerHTML=audios.map((a,i)=>{
-    const char=characters.find(c=>c.id===a.charId); const color=char?.color||'#888';
-    return `<div class="audio-row">
-      <div class="audio-color-bar" style="background:${color}"></div>
-      <div class="audio-char" style="color:${color}">${char?.name||a.charId}</div>
-      <div class="audio-preview">${a.emotions?a.emotions+' ':''}"${a.text}"</div>
-      <div class="audio-actions">
-        <button class="icon-btn ${playingIdx===i?'playing':''}" id="playbtn-${i}" onclick="togglePlay(${i})" title="Play">
+    const isMerged=a.merged;
+    const char=characters.find(c=>c.id===a.charId);
+    const color=isMerged?'#0b57d0':(char?.color||'#888');
+    const label=isMerged?'🎬 Full Story':char?.name||a.charId;
+    const preview=isMerged?'Complete merged audio — all characters':''+a.text;
+    return `<div class="audio-row ${isMerged?'merged':''}">
+      <div class="a-bar" style="background:${color}"></div>
+      <div class="a-char" style="color:${color}">${label}</div>
+      <div class="a-prev">${a.emotions?a.emotions+' ':''}"${preview}"</div>
+      <div class="a-acts">
+        <button class="icon-btn ${playingIdx===i?'playing':''}" id="pb-${i}" onclick="togglePlay(${i})">
           <span class="material-icons-round">${playingIdx===i?'pause':'play_arrow'}</span>
         </button>
         <button class="icon-btn" onclick="dlOne(${i})" title="Download">
@@ -562,38 +496,41 @@ function renderAudios() {
 
 function togglePlay(i){
   if(playingIdx!==null&&playingIdx!==i){
-    const p=document.getElementById('aud-'+playingIdx); if(p){p.pause();p.currentTime=0;}
-    playingIdx=null; renderAudios();
+    const p=document.getElementById('aud-'+playingIdx);if(p){p.pause();p.currentTime=0;}
+    playingIdx=null;renderAudios();
   }
-  const aud=document.getElementById('aud-'+i);
-  if(aud.paused){aud.play();playingIdx=i;}else{aud.pause();playingIdx=null;}
+  const a=document.getElementById('aud-'+i);
+  if(a.paused){a.play();playingIdx=i;}else{a.pause();playingIdx=null;}
   renderAudios();
 }
 function onEnd(i){playingIdx=null;renderAudios();}
-function dlOne(i){const a=audios[i];const l=document.createElement('a');l.href=a.url;l.download=`${String(i+1).padStart(2,'0')}_${a.charId}.mp3`;l.click();}
-function downloadAll(){audios.forEach((_,i)=>setTimeout(()=>dlOne(i),i*300));}
-function clearAudios(){audios=[];playingIdx=null;renderAudios();setStatus('','');}
-
-function insertAtCursor(text){
-  const ta=document.getElementById('scriptBox'); const s=ta.selectionStart;
-  const before=ta.value.slice(0,s); const after=ta.value.slice(ta.selectionEnd);
-  const needsNL=before.length>0&&!before.endsWith('\n\n')&&!before.endsWith('\n');
-  const ins=(needsNL?'\n':'')+text;
-  ta.value=before+ins+after; ta.selectionStart=ta.selectionEnd=s+ins.length;
-  ta.focus(); updateCharCount();
+function dlOne(i){
+  const a=audios[i];const l=document.createElement('a');
+  l.href=a.url;
+  l.download=a.merged?'gautam_story_full.mp3':`${String(i).padStart(2,'0')}_${a.charId}.mp3`;
+  l.click();
 }
+function dlAll(){audios.forEach((_,i)=>setTimeout(()=>dlOne(i),i*300));}
+function clearAll(){audios=[];playingIdx=null;renderAudios();setStatus('','');}
 
-function updateCharCount(){
+function ins(text){
+  const ta=document.getElementById('scriptBox');const s=ta.selectionStart;
+  const before=ta.value.slice(0,s);const after=ta.value.slice(ta.selectionEnd);
+  const needsNL=before.length>0&&!before.endsWith('\n\n')&&!before.endsWith('\n');
+  const t=(needsNL?'\n':'')+text;
+  ta.value=before+t+after;ta.selectionStart=ta.selectionEnd=s+t.length;
+  ta.focus();updateCount();
+}
+function updateCount(){
   const n=document.getElementById('scriptBox').value.length;
   document.getElementById('charCount').textContent=n.toLocaleString()+' characters';
 }
-
 function setStatus(html,type){
   const el=document.getElementById('statusMsg');
-  el.innerHTML=html; el.className='status-message'+(type?' '+type:'');
+  el.innerHTML=html;el.className='status-msg'+(type?' '+type:'');
 }
 
-renderChars(); updateCharCount();
+renderChars();updateCount();
 </script>
 </body>
 </html>
