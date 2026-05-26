@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTS Studio — ElevenLabs Multi-Character</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0d0f;
+      --bg2: #13161a;
+      --bg3: #1c2026;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --text: #e8eaed;
+      --muted: #7a8290;
+      --accent: #5b8af0;
+      --accent-dim: rgba(91,138,240,0.12);
+      --success: #4caf7d;
+      --danger: #e05c5c;
+      --warning: #e8a04a;
+      --font: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --devanagari: 'Noto Serif Devanagari', serif;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; }
+
+    /* ── Layout ── */
+    .app { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: 56px 1fr; min-height: 100vh; }
+
+    /* ── Topbar ── */
+    .topbar {
+      grid-column: 1 / -1;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px;
+    }
+    .topbar-logo { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .topbar-logo svg { color: var(--accent); }
+    .topbar-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .api-input-wrap { display: flex; gap: 6px; }
+    .api-input {
+      width: 240px; padding: 6px 10px; font-size: 12px; font-family: var(--mono);
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 6px; color: var(--text); outline: none;
+    }
+    .api-input:focus { border-color: var(--accent); }
+    .btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text); transition: all 0.15s; }
+    .btn:hover { background: var(--bg2); border-color: var(--border2); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover { opacity: 0.88; background: var(--accent); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+    .status-dot.ok { background: var(--success); box-shadow: 0 0 6px var(--success); }
+    .status-dot.err { background: var(--danger); }
+    #voiceCount { font-size: 12px; color: var(--muted); }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--bg2); border-right: 1px solid var(--border);
+      overflow-y: auto; padding: 16px 12px;
+    }
+    .section-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; padding-left: 4px; }
+
+    .char-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .char-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 8px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .char-card:hover { background: var(--bg3); }
+    .char-card.active { background: var(--accent-dim); border-color: rgba(91,138,240,0.3); }
+    .char-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+    .char-info { flex: 1; min-width: 0; }
+    .char-name { font-size: 13px; font-weight: 500; }
+    .char-voice-label { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+
+    .btn-add-char { width: 100%; border-style: dashed; font-size: 12px; padding: 7px; margin-bottom: 20px; }
+
+    .setting-row { margin-bottom: 12px; }
+    .setting-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+    .setting-label strong { color: var(--text); font-weight: 500; }
+    input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+
+    select {
+      width: 100%; padding: 6px 8px; font-size: 12px;
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 6px; color: var(--text); outline: none; cursor: pointer;
+      margin-bottom: 12px;
+    }
+    select:focus { border-color: var(--accent); }
+
+    .model-pills { display: flex; gap: 4px; margin-bottom: 6px; }
+    .model-pill { flex: 1; text-align: center; padding: 5px 2px; border-radius: 6px; border: 1px solid var(--border2); font-size: 11px; cursor: pointer; background: var(--bg3); transition: all 0.15s; }
+    .model-pill:hover { border-color: var(--border2); background: var(--bg2); }
+    .model-pill.active { background: var(--accent-dim); border-color: rgba(91,138,240,0.4); color: var(--accent); }
+    .model-hint { font-size: 11px; color: var(--muted); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* ── Main ── */
+    .main { display: flex; flex-direction: column; overflow: hidden; }
+
+    .editor-area { flex: 1; display: grid; grid-template-rows: auto 1fr auto; padding: 16px 20px; gap: 10px; overflow: hidden; }
+
+    .tag-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag-pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      border: 1px solid transparent; transition: all 0.15s;
+    }
+    .tag-pill:hover { opacity: 0.8; }
+    .tag-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    .emo-bar { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    .emo-label { font-size: 11px; color: var(--muted); }
+    .emo-tag { padding: 3px 9px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); transition: all 0.15s; }
+    .emo-tag:hover { border-color: var(--border2); background: var(--bg2); }
+
+    .script-wrap { position: relative; min-height: 0; }
+    #scriptBox {
+      width: 100%; height: 100%; min-height: 260px;
+      font-family: var(--devanagari); font-size: 15px; line-height: 1.9;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); padding: 14px 16px;
+      resize: none; outline: none; transition: border-color 0.15s;
+    }
+    #scriptBox:focus { border-color: rgba(91,138,240,0.4); }
+    .char-count { position: absolute; bottom: 10px; right: 12px; font-size: 11px; color: var(--muted); }
+
+    .bottom-bar {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 12px 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .btn-generate { padding: 8px 20px; font-size: 13px; font-weight: 500; }
+    .btn-batch { padding: 8px 16px; font-size: 13px; }
+    .status-msg { flex: 1; font-size: 12px; color: var(--muted); padding: 0 8px; }
+    .status-msg.ok { color: var(--success); }
+    .status-msg.err { color: var(--danger); }
+
+    /* ── Audio panel ── */
+    .audio-panel {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      max-height: 220px; overflow-y: auto;
+    }
+    .audio-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px 6px; border-bottom: 1px solid var(--border);
+    }
+    .audio-panel-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn-dl-all { font-size: 11px; padding: 4px 10px; }
+
+    .audio-list { padding: 6px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .audio-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--bg3); transition: background 0.15s;
+    }
+    .audio-row:hover { background: var(--bg); }
+    .audio-char-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .audio-char-name { font-size: 12px; font-weight: 500; min-width: 80px; color: var(--text); }
+    .audio-text-preview { flex: 1; font-size: 12px; color: var(--muted); font-family: var(--devanagari); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .audio-btns { display: flex; gap: 4px; }
+    .audio-btns button { padding: 4px 8px; font-size: 11px; }
+    .audio-btns button.playing { background: var(--accent-dim); border-color: rgba(91,138,240,0.4); color: var(--accent); }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+    /* ── Loading spinner ── */
+    .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 4px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      TTS Studio
+      <span class="topbar-sub">ElevenLabs · Multi-character</span>
+    </div>
+    <div class="topbar-right">
+      <div id="statusDot" class="status-dot"></div>
+      <span id="voiceCount">Not connected</span>
+      <div class="api-input-wrap">
+        <input type="password" class="api-input" id="apiKey" placeholder="ElevenLabs API key (sk_...)" />
+        <button class="btn btn-primary" onclick="loadVoices()">Connect</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="section-label">Characters</div>
+    <div class="char-list" id="charList"></div>
+    <button class="btn btn-add-char" onclick="addCharacter()">+ Add character</button>
+
+    <hr class="divider">
+
+    <div id="charSettingsPanel" style="display:none">
+      <div class="section-label" id="charSettingsLabel">Voice settings</div>
+      <select id="voiceSelect" onchange="updateCharVoice()">
+        <option value="">— assign voice —</option>
+      </select>
+      <div class="setting-row">
+        <div class="setting-label">Stability <strong id="stabVal">0.50</strong></div>
+        <input type="range" min="0" max="1" step="0.05" value="0.5" id="stabSlider"
+          oninput="document.getElementById('stabVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Similarity boost <strong id="simVal">0.75</strong></div>
+        <input type="range" min="0" max="1" step="0.05" value="0.75" id="simSlider"
+          oninput="document.getElementById('simVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Style (v3) <strong id="styleVal">0.30</strong></div>
+        <input type="range" min="0" max="1" step="0.05" value="0.3" id="styleSlider"
+          oninput="document.getElementById('styleVal').textContent=parseFloat(this.value).toFixed(2); saveCharSettings()" />
+      </div>
+      <hr class="divider">
+    </div>
+
+    <div class="section-label">Model</div>
+    <div class="model-pills">
+      <div class="model-pill active" id="pill-eleven_v3" onclick="setModel('eleven_v3', this)">v3 alpha</div>
+      <div class="model-pill" id="pill-eleven_multilingual_v2" onclick="setModel('eleven_multilingual_v2', this)">ML v2</div>
+      <div class="model-pill" id="pill-eleven_turbo_v2_5" onclick="setModel('eleven_turbo_v2_5', this)">Turbo</div>
+    </div>
+    <div class="model-hint">v3 = best Hindi emotion quality</div>
+  </aside>
+
+  <!-- MAIN EDITOR -->
+  <main class="main">
+    <div class="editor-area">
+
+      <!-- Character tag bar -->
+      <div>
+        <div class="tag-bar" id="tagBar" style="margin-bottom:8px;"></div>
+        <div class="emo-bar">
+          <span class="emo-label">Emotion tags:</span>
+          <span class="emo-tag" onclick="insertAtCursor('[धीरे]')">[धीरे]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[भावुक]')">[भावुक]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[रोते हुए]')">[रोते हुए]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[शांत]')">[शांत]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[गर्जना]')">[गर्जना]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[whisper]')">[whisper]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[excited]')">[excited]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[sad]')">[sad]</span>
+          <span class="emo-tag" onclick="insertAtCursor('[angry]')">[angry]</span>
+        </div>
+      </div>
+
+      <!-- Script textarea -->
+      <div class="script-wrap">
+        <textarea id="scriptBox" spellcheck="false" placeholder="Script यहाँ लिखें — [character] tags का उपयोग करें:
+
+[narrator] यह उस महान काल की बात है — इस अवसर्पिणी के चतुर्थ आरक के अन्तिम समय की।
+
+[gautam] [भावुक] हे प्रभो! मैं अपने माता-पिता को पूछकर आप देवानुप्रिय के पास श्रमण दीक्षा अंगीकार करूँगा।
+
+[arishtanemi] [शांत] वत्स! जाओ। माता-पिता से आज्ञा लो। लौट आना।
+
+[dharini] [रोते हुए] जाओ बेटा। मोक्ष-मार्ग पर जाओ। माँ का आशीष है।" oninput="updateCharCount()"></textarea>
+        <div class="char-count" id="charCount">0 chars</div>
+      </div>
+    </div>
+
+    <!-- Bottom action bar -->
+    <div class="bottom-bar">
+      <button class="btn btn-primary btn-generate" id="btnGenerate" onclick="generateAll()" disabled>
+        ⚡ Generate all segments
+      </button>
+      <button class="btn btn-batch" id="btnFirst" onclick="generateFirst()" disabled>
+        ▶ Test first segment
+      </button>
+      <div class="status-msg" id="statusMsg">Connect API key to start</div>
+      <button class="btn" onclick="clearAudios()">Clear outputs</button>
+    </div>
+
+    <!-- Audio output panel -->
+    <div class="audio-panel" id="audioPanel" style="display:none">
+      <div class="audio-panel-header">
+        <span class="audio-panel-title" id="audioPanelTitle">Generated audio</span>
+        <button class="btn btn-dl-all" onclick="downloadAll()">⬇ Download all</button>
+      </div>
+      <div class="audio-list" id="audioList"></div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+const PALETTE = ['#5b8af0','#4caf7d','#e8714a','#c97de0','#e8a04a','#4ac4e8','#e05c9a'];
+
+let voices = [];
+let characters = [
+  { id:'narrator',     name:'Narrator',     voiceId:'', color:PALETTE[0], stability:0.5, similarity:0.75, style:0.3 },
+  { id:'gautam',       name:'Gautam',       voiceId:'', color:PALETTE[1], stability:0.5, similarity:0.75, style:0.4 },
+  { id:'dharini',      name:'Dharini',      voiceId:'', color:PALETTE[2], stability:0.5, similarity:0.75, style:0.35 },
+  { id:'arishtanemi',  name:'Arishtanemi',  voiceId:'', color:PALETTE[3], stability:0.6, similarity:0.75, style:0.25 },
+];
+let activeCharId = 'narrator';
+let selectedModel = 'eleven_v3';
+let audios = [];
+let currentlyPlaying = null;
+
+// ── Render ──
+function renderChars() {
+  document.getElementById('charList').innerHTML = characters.map(c => `
+    <div class="char-card ${c.id === activeCharId ? 'active' : ''}" onclick="selectChar('${c.id}')">
+      <div class="char-avatar" style="background:${c.color}22; color:${c.color}">${c.name.slice(0,2).toUpperCase()}</div>
+      <div class="char-info">
+        <div class="char-name">${c.name}</div>
+        <div class="char-voice-label">${c.voiceId ? (voices.find(v=>v.voice_id===c.voiceId)?.name || 'Voice assigned') : 'No voice assigned'}</div>
+      </div>
+    </div>
+  `).join('');
+  renderTagBar();
+  renderCharSettingsPanel();
+}
+
+function renderTagBar() {
+  document.getElementById('tagBar').innerHTML = characters.map(c => `
+    <div class="tag-pill" style="background:${c.color}18; border-color:${c.color}40; color:${c.color}" onclick="insertAtCursor('[${c.id}] ')">
+      <span class="tag-dot" style="background:${c.color}"></span>${c.name}
+    </div>
+  `).join('');
+}
+
+function renderCharSettingsPanel() {
+  const c = characters.find(x => x.id === activeCharId);
+  if (!c) return;
+  document.getElementById('charSettingsPanel').style.display = 'block';
+  document.getElementById('charSettingsLabel').textContent = c.name + ' — voice & settings';
+  document.getElementById('stabVal').textContent = c.stability.toFixed(2);
+  document.getElementById('simVal').textContent = c.similarity.toFixed(2);
+  document.getElementById('styleVal').textContent = c.style.toFixed(2);
+  document.getElementById('stabSlider').value = c.stability;
+  document.getElementById('simSlider').value = c.similarity;
+  document.getElementById('styleSlider').value = c.style;
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '<option value="">— assign voice —</option>' +
+    voices.map(v => `<option value="${v.voice_id}" ${v.voice_id === c.voiceId ? 'selected':''}>
+      ${v.name}${v.category === 'cloned' ? ' 🎙️' : v.category === 'generated' ? ' ✨' : ''}
+    </option>`).join('');
+}
+
+function selectChar(id) {
+  saveCharSettings();
+  activeCharId = id;
+  renderChars();
+}
+
+function updateCharVoice() {
+  const c = characters.find(x => x.id === activeCharId);
+  if (c) { c.voiceId = document.getElementById('voiceSelect').value; renderChars(); }
+}
+
+function saveCharSettings() {
+  const c = characters.find(x => x.id === activeCharId);
+  if (!c) return;
+  c.stability = parseFloat(document.getElementById('stabSlider').value);
+  c.similarity = parseFloat(document.getElementById('simSlider').value);
+  c.style = parseFloat(document.getElementById('styleSlider').value);
+}
+
+function addCharacter() {
+  const name = prompt('Character name (e.g. Sudharma):');
+  if (!name || !name.trim()) return;
+  const id = name.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  if (characters.find(c => c.id === id)) { alert('Character already exists'); return; }
+  characters.push({ id, name:name.trim(), voiceId:'', color:PALETTE[characters.length % PALETTE.length], stability:0.5, similarity:0.75, style:0.3 });
+  activeCharId = id;
+  renderChars();
+}
+
+function setModel(model, el) {
+  selectedModel = model;
+  document.querySelectorAll('.model-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── API ──
+async function loadVoices() {
+  const key = document.getElementById('apiKey').value.trim();
+  if (!key) { setStatus('Enter your ElevenLabs API key first', 'err'); return; }
+  setStatus('Connecting...', '');
+  try {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices', { headers: { 'xi-api-key': key } });
+    if (!res.ok) throw new Error('API error ' + res.status + ' — check your key');
+    const data = await res.json();
+    voices = data.voices || [];
+    const dot = document.getElementById('statusDot');
+    dot.className = 'status-dot ok';
+    document.getElementById('voiceCount').textContent = `${voices.length} voices`;
+    document.getElementById('btnGenerate').disabled = false;
+    document.getElementById('btnFirst').disabled = false;
+    renderChars();
+    setStatus(`Connected — ${voices.length} voices loaded`, 'ok');
+  } catch(e) {
+    document.getElementById('statusDot').className = 'status-dot err';
+    setStatus('Connection failed: ' + e.message, 'err');
+  }
+}
+
+// ── Script parsing ──
+function parseScript(text) {
+  return text.split('\n')
+    .filter(l => l.trim())
+    .map(line => {
+      const m = line.match(/^\[([^\]]+)\]\s*((?:\[[^\]]+\]\s*)*)(.+)/);
+      if (!m) return null;
+      return {
+        charId: m[1].trim().toLowerCase().replace(/\s+/g,'_'),
+        emotions: m[2].trim(),
+        text: m[3].trim(),
+      };
+    })
+    .filter(Boolean);
+}
+
+async function callTTS(segment) {
+  const key = document.getElementById('apiKey').value.trim();
+  const char = characters.find(c => c.id === segment.charId);
+  if (!char) throw new Error(`Unknown character: [${segment.charId}]`);
+  if (!char.voiceId) throw new Error(`No voice assigned to: ${char.name}`);
+
+  const fullText = segment.emotions ? `${segment.emotions} ${segment.text}` : segment.text;
+  const body = {
+    text: fullText,
+    model_id: selectedModel,
+    voice_settings: {
+      stability: char.stability,
+      similarity_boost: char.similarity,
+      style: char.style,
+      use_speaker_boost: true
+    }
+  };
+
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${char.voiceId}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': key, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.detail?.message || `API error ${res.status}`);
+  }
+  const blob = await res.blob();
+  return URL.createObjectURL(blob);
+}
+
+// ── Generate ──
+async function generateFirst() {
+  const segments = parseScript(document.getElementById('scriptBox').value);
+  if (!segments.length) { setStatus('No [character] tags found in script', 'err'); return; }
+  setBusy(true);
+  try {
+    setStatus(`<span class="spinner"></span>Generating: ${segments[0].charId}...`, '');
+    document.getElementById('statusMsg').innerHTML = `<span class="spinner"></span> Generating: ${segments[0].charId}...`;
+    const url = await callTTS(segments[0]);
+    audios.unshift({ ...segments[0], url, id: Date.now() });
+    renderAudios();
+    setStatus(`Test segment ready — play it below`, 'ok');
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'err');
+  }
+  setBusy(false);
+}
+
+async function generateAll() {
+  saveCharSettings();
+  const segments = parseScript(document.getElementById('scriptBox').value);
+  if (!segments.length) { setStatus('No [character] tags found in script', 'err'); return; }
+  setBusy(true);
+  audios = [];
+  renderAudios();
+
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    document.getElementById('statusMsg').innerHTML = `<span class="spinner"></span> ${i+1}/${segments.length} — ${seg.charId}: "${seg.text.slice(0,40)}..."`;
+    try {
+      const url = await callTTS(seg);
+      audios.push({ ...seg, url, id: Date.now() + i });
+      renderAudios();
+      await new Promise(r => setTimeout(r, 300));
+    } catch(e) {
+      setStatus(`Stopped at segment ${i+1}: ${e.message}`, 'err');
+      setBusy(false);
+      return;
+    }
+  }
+  setStatus(`All ${audios.length} segments generated successfully!`, 'ok');
+  setBusy(false);
+}
+
+function setBusy(busy) {
+  document.getElementById('btnGenerate').disabled = busy;
+  document.getElementById('btnFirst').disabled = busy;
+}
+
+// ── Audio render ──
+function renderAudios() {
+  const panel = document.getElementById('audioPanel');
+  const list = document.getElementById('audioList');
+  if (!audios.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  document.getElementById('audioPanelTitle').textContent = `${audios.length} segment${audios.length>1?'s':''} generated`;
+  list.innerHTML = audios.map((a, i) => {
+    const char = characters.find(c => c.id === a.charId);
+    const color = char ? char.color : '#888';
+    return `
+      <div class="audio-row">
+        <div class="audio-char-dot" style="background:${color}"></div>
+        <div class="audio-char-name" style="color:${color}">${char?.name || a.charId}</div>
+        <div class="audio-text-preview">${a.emotions ? a.emotions + ' ' : ''}${a.text}</div>
+        <div class="audio-btns">
+          <button class="btn" id="playbtn-${i}" onclick="togglePlay(${i})">▶ Play</button>
+          <button class="btn" onclick="dlOne(${i})">⬇</button>
+        </div>
+        <audio id="aud-${i}" src="${a.url}" onended="onAudioEnd(${i})"></audio>
+      </div>
+    `;
+  }).join('');
+}
+
+function togglePlay(i) {
+  const aud = document.getElementById('aud-' + i);
+  const btn = document.getElementById('playbtn-' + i);
+  if (currentlyPlaying !== null && currentlyPlaying !== i) {
+    const prev = document.getElementById('aud-' + currentlyPlaying);
+    const prevBtn = document.getElementById('playbtn-' + currentlyPlaying);
+    if (prev) { prev.pause(); prev.currentTime = 0; }
+    if (prevBtn) { prevBtn.textContent = '▶ Play'; prevBtn.classList.remove('playing'); }
+  }
+  if (aud.paused) {
+    aud.play();
+    btn.textContent = '⏸ Pause';
+    btn.classList.add('playing');
+    currentlyPlaying = i;
+  } else {
+    aud.pause();
+    btn.textContent = '▶ Play';
+    btn.classList.remove('playing');
+    currentlyPlaying = null;
+  }
+}
+
+function onAudioEnd(i) {
+  const btn = document.getElementById('playbtn-' + i);
+  if (btn) { btn.textContent = '▶ Play'; btn.classList.remove('playing'); }
+  currentlyPlaying = null;
+}
+
+function dlOne(i) {
+  const a = audios[i];
+  const char = characters.find(c => c.id === a.charId);
+  const link = document.createElement('a');
+  link.href = a.url;
+  link.download = `${String(i+1).padStart(2,'0')}_${a.charId}.mp3`;
+  link.click();
+}
+
+function downloadAll() {
+  audios.forEach((_, i) => setTimeout(() => dlOne(i), i * 300));
+}
+
+function clearAudios() {
+  audios = [];
+  currentlyPlaying = null;
+  renderAudios();
+  setStatus('', '');
+}
+
+// ── Helpers ──
+function insertAtCursor(text) {
+  const ta = document.getElementById('scriptBox');
+  const s = ta.selectionStart;
+  const val = ta.value;
+  const before = val.slice(0, s);
+  const needsNL = before.length > 0 && !before.endsWith('\n\n') && !before.endsWith('\n');
+  const insert = (needsNL ? '\n' : '') + text;
+  ta.value = before + insert + val.slice(ta.selectionEnd);
+  ta.selectionStart = ta.selectionEnd = s + insert.length;
+  ta.focus();
+  updateCharCount();
+}
+
+function updateCharCount() {
+  const val = document.getElementById('scriptBox').value;
+  document.getElementById('charCount').textContent = val.length.toLocaleString() + ' chars';
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.innerHTML = msg;
+  el.className = 'status-msg' + (type ? ' ' + type : '');
+}
+
+renderChars();
+updateCharCount();
+</script>
+</body>
+</html>
