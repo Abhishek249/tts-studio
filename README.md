@@ -9,7 +9,7 @@
 
 ## 🎬 Demo
 
-[![TTS Studio Demo](https://cdn.loom.com/sessions/thumbnails/27d410cfd22242f19f91508fede41135-with-play.gif)](https://www.loom.com/share/27d410cfd22242f19f91508fede41135)
+https://github.com/Abhishek249/tts-studio/raw/main/demo.mp4
 
 > *Connect → Assign voices → Paste Hindi script → Generate segments → Download for InShot*
 
