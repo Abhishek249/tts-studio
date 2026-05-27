@@ -7,19 +7,19 @@
 
 ---
 
-## ✨ What it does
+## 🎬 Demo
 
-Paste a script with `[character]` tags → assign ElevenLabs voices to each character → click **Generate** → download numbered MP3 segments ready for InShot, CapCut, or any video editor.
+[![TTS Studio Demo](https://cdn.loom.com/sessions/thumbnails/27d410cfd22242f19f91508fede41135-with-play.gif)](https://www.loom.com/share/27d410cfd22242f19f91508fede41135)
 
-No stitching. No timing headaches. Each segment is numbered so your video editor knows the sequence.
+> *Connect → Assign voices → Paste Hindi script → Generate segments → Download for InShot*
 
 ---
 
-## 🎬 Demo
+## ✨ What it does
 
-https://github.com/user-attachments/assets/placeholder-video
+Paste a script with `[character]` tags → assign ElevenLabs voices to each character → click **Generate all segments** → download numbered MP3s ready for InShot, CapCut, or any video editor.
 
-> *Connect → Assign voices → Paste script → Generate → Download*
+No stitching. No timing headaches. Each segment is numbered so your video editor knows the sequence.
 
 ---
 
@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/placeholder-video
 
 1. Open [abhishek249.github.io/tts-studio](https://abhishek249.github.io/tts-studio)
 2. Paste your **ElevenLabs API key** → click **Connect**
-3. Your voices load automatically — assign each character a voice
+3. Characters & voice assignments load automatically from `characters.json`
 4. Write or paste your script using `[character]` tags
 5. Click **Generate all segments**
 6. Download numbered MP3s → import into InShot / CapCut
@@ -53,7 +53,7 @@ Simple tag-based format — one line per dialogue:
 ```
 
 ### Character tags
-Click any character chip to insert their tag at cursor position.
+Click any character chip in the toolbar to insert their tag at cursor position.
 
 ### Emotion tags
 `[भावुक]` `[शांत]` `[रोते हुए]` `[धीरे]` `[गर्जना]` `[whisper]` `[excited]` `[reverent]`
@@ -73,45 +73,39 @@ Each segment downloads as a numbered MP3:
 ...
 ```
 
-Import all into InShot → place each clip on the timeline → sync with AI-generated scene images → done.
+Import all into InShot → place each clip on the timeline → sync with AI-generated scene images → export movie.
 
 ---
 
 ## 👥 Characters & Voice Mapping
 
-Character → voice assignments are stored in [`characters.json`](./characters.json) in this repo — shared across all collaborators, no browser storage.
+Character → voice assignments live in [`characters.json`](./characters.json) — shared across all collaborators, no browser storage needed.
 
 ```json
 {
   "characters": [
-    {
-      "id": "narrator",
-      "name": "Narrator",
-      "voiceId": "o76sLDABsemuKZKvLV1a",
-      "voiceName": "Katha vaachak"
-    },
-    {
-      "id": "sudharma",
-      "name": "Sudharma",
-      "voiceId": "S6fdx8hmfwbuJn0oSUXj",
-      "voiceName": "Acharya Sudharma Swami Ji"
-    }
+    { "id": "narrator",     "name": "Narrator",     "voiceId": "o76sLDABsemuKZKvLV1a", "voiceName": "Katha vaachak" },
+    { "id": "sudharma",     "name": "Sudharma",     "voiceId": "S6fdx8hmfwbuJn0oSUXj", "voiceName": "Acharya Sudharma Swami Ji" },
+    { "id": "jambu",        "name": "Jambu",         "voiceId": "Tk7CafXYxqYvvn5VIHqd", "voiceName": "Jambuswami ji" },
+    { "id": "gautam",       "name": "Gautam",        "voiceId": "JBFqnCBsd6RMkjVDRZzb", "voiceName": "George - Warm Storyteller" },
+    { "id": "arishtanemi",  "name": "Arishtanemi",   "voiceId": "nPczCjzI2devNBz1zQrb", "voiceName": "Brian - Deep, Resonant" },
+    { "id": "dharini",      "name": "Dharini",       "voiceId": "cgSgspJ2msm6clMCkdW9", "voiceName": "Jessica - Warm" }
   ]
 }
 ```
 
-To update: change voice in the sidebar → click **Save to repo** → enter GitHub token.
+To update mappings: change voice in the sidebar → click **Save to repo** → enter GitHub token → `characters.json` is updated for everyone.
 
 ---
 
 ## 🎛️ Voice Settings
 
-Per character, adjustable:
+Per character, adjustable in the sidebar:
 
 | Setting | What it does |
 |---|---|
-| **Stability** | Consistency of voice (higher = more consistent) |
-| **Similarity boost** | How closely it matches the original voice |
+| **Stability** | Consistency of voice — higher = more consistent |
+| **Similarity boost** | How closely it matches the original cloned voice |
 | **Style** | Expressiveness / emotion intensity (v3 only) |
 
 ---
@@ -120,7 +114,7 @@ Per character, adjustable:
 
 | Model | Best for |
 |---|---|
-| **v3 alpha** | Hindi — best emotion & expressiveness ⭐ |
+| **v3 alpha** ⭐ | Hindi — best emotion & expressiveness |
 | **Multilingual v2** | Production quality, stable |
 | **Turbo v2.5** | Faster generation, lower cost |
 
@@ -130,9 +124,15 @@ Per character, adjustable:
 
 This studio is part of a larger project to create an AI-generated animated movie based on **Varga 1 of the Antgaddashang Sutra** (8th Jain Agama) — the story of Gautam Kumar's journey to liberation.
 
-**Pipeline:**
+**Full pipeline:**
 ```
-TTS Studio (audio) → Ideogram AI (scene art) → InShot (edit) → YouTube
+TTS Studio → audio segments
+      ↓
+Ideogram AI → scene illustrations  
+      ↓
+InShot → sync audio + images + Ken Burns effect + music
+      ↓
+YouTube 🎬
 ```
 
 **Related repo:** [gautam-movie-audio](https://github.com/Abhishek249/gautam-movie-audio)
@@ -142,8 +142,8 @@ TTS Studio (audio) → Ideogram AI (scene art) → InShot (edit) → YouTube
 ## 🛠️ Tech
 
 - Vanilla HTML/CSS/JS — zero dependencies, zero build step
-- [ElevenLabs API](https://elevenlabs.io/api) for TTS
-- [Material Design 3](https://m3.material.io/) design system (Google Fonts + Icons)
+- [ElevenLabs API](https://elevenlabs.io/api) — TTS with custom cloned voices
+- [Material Design 3](https://m3.material.io/) — Google's design system
 - Hosted on GitHub Pages
 
 ---
