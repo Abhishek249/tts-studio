@@ -8,10 +8,11 @@
 ---
 
 ## 🎬 Demo
-
-https://github.com/Abhishek249/tts-studio/raw/main/demo.mp4
-
 > *Connect → Assign voices → Paste Hindi script → Generate segments → Download for InShot*
+
+https://github.com/user-attachments/assets/ddb5dc11-1792-473c-bd05-061b0efc458a
+
+
 
 ---
 
